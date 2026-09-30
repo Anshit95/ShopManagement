@@ -1,0 +1,2687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SHANKAR BEEJ BHANDAR - Digital Shop & Inventory Management</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        agri: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            dark: '#0a2312'
+                        },
+                        amberGold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f5;
+            color: #1e293b;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Modern 3D & Elevation Utilities */
+        .card-3d {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 248, 245, 0.85));
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03), inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 1rem;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-3d:hover {
+            transform: translateY(-3px) scale(1.002);
+            box-shadow: 0 15px 30px -5px rgba(22, 101, 52, 0.12), 0 10px 12px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-3d {
+            background: linear-gradient(180deg, #16a34a 0%, #15803d 100%);
+            box-shadow: 0 4px 6px -1px rgba(22, 163, 74, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+            border: 1px solid #14532d;
+            transition: all 0.15s ease;
+        }
+
+        .btn-3d:active {
+            transform: translateY(2px);
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-3d-amber {
+            background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+            box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+            border: 1px solid #b45309;
+        }
+
+        .btn-3d-danger {
+            background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+            border: 1px solid #991b1b;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Printable A4 Formats */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-area, #printable-area * {
+                visibility: visible;
+            }
+            #printable-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col pb-20 md:pb-0">
+
+    <header class="bg-agri-900 text-white sticky top-0 z-40 shadow-lg border-b border-agri-700">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 to-agri-500 flex items-center justify-center text-agri-900 font-extrabold text-xl shadow-inner transform rotate-3">
+                    <i class="fa-solid font-bold fa-wheat-awn"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-extrabold tracking-tight leading-tight text-amber-300">SHANKAR BEEJ BHANDAR</h1>
+                    <p class="text-xs text-agri-200 font-medium hidden sm:block">Digital Shop & Inventory Management System</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+                <button onclick="app.loadSampleDataPrompt()" class="bg-agri-800 hover:bg-agri-700 text-amber-300 text-xs px-3 py-1.5 rounded-lg border border-agri-600 font-medium transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span class="hidden sm:inline">Demo Data</span>
+                </button>
+                <div id="online-status-badge" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Offline Ready</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex max-w-7xl w-full mx-auto">
+
+        <aside class="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 p-4 space-y-1 shadow-sm shrink-0">
+            <div class="px-3 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider">Main Menu</div>
+            <nav class="space-y-1" id="desktop-nav">
+                <button onclick="app.navigate('dashboard')" data-tab="dashboard" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-agri-50 hover:text-agri-800 transition">
+                    <i class="fa-solid fa-chart-pie w-5 text-agri-600"></i> Dashboard
+                </button>
+                <button onclick="app.navigate('pos')" data-tab="pos" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-agri-50 hover:text-agri-800 transition">
+                    <i class="fa-solid fa-cart-shopping w-5 text-agri-600"></i> Sales POS
+                </button>
+                <button onclick="app.navigate('purchases')" data-tab="purchases" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-agri-50 hover:text-agri-800 transition">
+                    <i class="fa-solid fa-truck-ramp-box w-5 text-agri-600"></i> Purchase Bills
+                </button>
+                <button onclick="app.navigate('inventory')" data-tab="inventory" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-agri-50 hover:text-agri-800 transition">
+                    <i class="fa-solid fa-boxes-stacked w-5 text-agri-600"></i> Products & Stock
+                </button>
+                <button onclick="app.navigate('distributors')" data-tab="distributors" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-agri-50 hover:text-agri-800 transition">
+                    <i class="fa-solid fa-building-columns w-5 text-agri-600"></i> Distributors
+                </button>
+                <button onclick="app.navigate('customers')" data-tab="customers" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-agri-50 hover:text-agri-800 transition">
+                    <i class="fa-solid fa-users w-5 text-agri-600"></i> Farmers / Khata
+                </button>
+                
+                <div class="pt-4 px-3 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider">Reports & Tax</div>
+                <button onclick="app.navigate('gst')" data-tab="gst" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-agri-50 hover:text-agri-800 transition">
+                    <i class="fa-solid fa-file-invoice-dollar w-5 text-emerald-600"></i> Pesticide GST
+                </button>
+                <button onclick="app.navigate('reports')" data-tab="reports" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-agri-50 hover:text-agri-800 transition">
+                    <i class="fa-solid fa-book-bookmark w-5 text-agri-600"></i> Stock Register & Reports
+                </button>
+                <button onclick="app.navigate('settings')" data-tab="settings" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-agri-50 hover:text-agri-800 transition">
+                    <i class="fa-solid fa-gears w-5 text-slate-500"></i> Backup & Settings
+                </button>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-3 md:p-6 overflow-y-auto max-w-full">
+            <div id="view-container">
+                <!-- Views injected via JS -->
+            </div>
+        </main>
+    </div>
+
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-30 px-2 py-1.5 shadow-lg">
+        <div class="grid grid-cols-5 gap-1 text-center" id="mobile-nav">
+            <button onclick="app.navigate('dashboard')" data-tab="dashboard" class="mobile-nav-item py-1 text-slate-600 flex flex-col items-center">
+                <i class="fa-solid fa-chart-pie text-lg"></i>
+                <span class="text-[10px] font-medium mt-0.5">Home</span>
+            </button>
+            <button onclick="app.navigate('pos')" data-tab="pos" class="mobile-nav-item py-1 text-slate-600 flex flex-col items-center">
+                <i class="fa-solid fa-cart-shopping text-lg"></i>
+                <span class="text-[10px] font-medium mt-0.5">Sale</span>
+            </button>
+            <button onclick="app.navigate('purchases')" data-tab="purchases" class="mobile-nav-item py-1 text-slate-600 flex flex-col items-center">
+                <i class="fa-solid fa-truck-ramp-box text-lg"></i>
+                <span class="text-[10px] font-medium mt-0.5">Purchase</span>
+            </button>
+            <button onclick="app.navigate('inventory')" data-tab="inventory" class="mobile-nav-item py-1 text-slate-600 flex flex-col items-center">
+                <i class="fa-solid fa-boxes-stacked text-lg"></i>
+                <span class="text-[10px] font-medium mt-0.5">Stock</span>
+            </button>
+            <button onclick="app.openMobileMoreMenu()" class="py-1 text-slate-600 flex flex-col items-center">
+                <i class="fa-solid fa-bars-staggered text-lg"></i>
+                <span class="text-[10px] font-medium mt-0.5">More</span>
+            </button>
+        </div>
+    </nav>
+
+    <div id="global-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden opacity-0 transition-opacity duration-200">
+        <div id="global-modal-content" class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-100 transform scale-95 transition-transform duration-200">
+            <!-- Modal Head & Body populated dynamically -->
+        </div>
+    </div>
+
+    <div id="mobile-more-drawer" class="fixed inset-0 bg-slate-900/60 z-50 hidden flex flex-col justify-end">
+        <div class="bg-white rounded-t-2xl p-5 space-y-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b pb-3">
+                <h3 class="font-bold text-slate-800 text-base">All Modules</h3>
+                <button onclick="app.closeMobileMoreMenu()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="app.navigate('distributors'); app.closeMobileMoreMenu();" class="p-3 bg-slate-50 rounded-xl flex items-center gap-3 font-semibold text-sm text-slate-700 hover:bg-agri-50">
+                    <i class="fa-solid fa-building-columns text-agri-600 text-lg"></i> Distributors
+                </button>
+                <button onclick="app.navigate('customers'); app.closeMobileMoreMenu();" class="p-3 bg-slate-50 rounded-xl flex items-center gap-3 font-semibold text-sm text-slate-700 hover:bg-agri-50">
+                    <i class="fa-solid fa-users text-agri-600 text-lg"></i> Farmers Khata
+                </button>
+                <button onclick="app.navigate('gst'); app.closeMobileMoreMenu();" class="p-3 bg-slate-50 rounded-xl flex items-center gap-3 font-semibold text-sm text-slate-700 hover:bg-agri-50">
+                    <i class="fa-solid fa-file-invoice-dollar text-emerald-600 text-lg"></i> Pesticide GST
+                </button>
+                <button onclick="app.navigate('reports'); app.closeMobileMoreMenu();" class="p-3 bg-slate-50 rounded-xl flex items-center gap-3 font-semibold text-sm text-slate-700 hover:bg-agri-50">
+                    <i class="fa-solid fa-book-bookmark text-agri-600 text-lg"></i> Reports & Register
+                </button>
+                <button onclick="app.navigate('settings'); app.closeMobileMoreMenu();" class="p-3 bg-slate-50 rounded-xl flex items-center gap-3 font-semibold text-sm text-slate-700 hover:bg-agri-50">
+                    <i class="fa-solid fa-gears text-slate-600 text-lg"></i> Settings & Backup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="fixed top-16 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <script>
+        /**
+         * SHANKAR BEEJ BHANDAR - Database & Business Logic Engine
+         */
+        class ShopDB {
+            constructor() {
+                this.dbName = 'ShankarBeejBhandarDB';
+                this.dbVersion = 1;
+                this.db = null;
+            }
+
+            async init() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(this.dbName, this.dbVersion);
+
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        const stores = [
+                            'products', 'distributors', 'customers', 
+                            'purchases', 'sales', 'payments', 
+                            'stock_ledger', 'settings'
+                        ];
+
+                        stores.forEach(store => {
+                            if (!db.objectStoreNames.contains(store)) {
+                                db.createObjectStore(store, { keyPath: 'id' });
+                            }
+                        });
+                    };
+
+                    request.onsuccess = (e) => {
+                        this.db = e.target.result;
+                        resolve(this.db);
+                    };
+
+                    request.onerror = (e) => reject(e.target.error);
+                });
+            }
+
+            async getAll(storeName) {
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction(storeName, 'readonly');
+                    const store = tx.objectStore(storeName);
+                    const req = store.getAll();
+                    req.onsuccess = () => resolve(req.result || []);
+                    req.onerror = () => reject(req.error);
+                });
+            }
+
+            async get(storeName, id) {
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction(storeName, 'readonly');
+                    const store = tx.objectStore(storeName);
+                    const req = store.get(id);
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => reject(req.error);
+                });
+            }
+
+            async save(storeName, item) {
+                if (!item.id) item.id = 'ID_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction(storeName, 'readwrite');
+                    const store = tx.objectStore(storeName);
+                    const req = store.put(item);
+                    req.onsuccess = () => resolve(item);
+                    req.onerror = () => reject(req.error);
+                });
+            }
+
+            async delete(storeName, id) {
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction(storeName, 'readwrite');
+                    const store = tx.objectStore(storeName);
+                    const req = store.delete(id);
+                    req.onsuccess = () => resolve(true);
+                    req.onerror = () => reject(req.error);
+                });
+            }
+
+            async clearAll() {
+                const stores = ['products', 'distributors', 'customers', 'purchases', 'sales', 'payments', 'stock_ledger'];
+                for (let s of stores) {
+                    const tx = this.db.transaction(s, 'readwrite');
+                    tx.objectStore(s).clear();
+                }
+            }
+        }
+
+        // Main Application Controller
+        class Application {
+            constructor() {
+                this.db = new ShopDB();
+                this.currentView = 'dashboard';
+                this.settings = {
+                    shopName: 'SHANKAR BEEJ BHANDAR',
+                    address: 'Main Market, Agricultural Zone, District Center',
+                    phone: '+91 98765 43210',
+                    gstin: '09AAAAA0000A1Z5',
+                    allowNegativeStock: false
+                };
+            }
+
+            async init() {
+                await this.db.init();
+                
+                // Load Settings
+                const savedSettings = await this.db.get('settings', 'config');
+                if (savedSettings) this.settings = { ...this.settings, ...savedSettings };
+
+                // Register Service Worker for PWA
+                if ('serviceWorker' in navigator) {
+                    const swCode = `
+                        self.addEventListener('install', e => e.waitUntil(self.skipWaiting()));
+                        self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+                        self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => new Response('Offline'))));
+                    `;
+                    const blob = new Blob([swCode], { type: 'application/javascript' });
+                    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+                }
+
+                // Initial Route
+                this.navigate('dashboard');
+                
+                // Global Event Listeners
+                window.addEventListener('online', () => this.updateOnlineStatus());
+                window.addEventListener('offline', () => this.updateOnlineStatus());
+            }
+
+            updateOnlineStatus() {
+                const badge = document.getElementById('online-status-badge');
+                if (navigator.onLine) {
+                    badge.className = 'px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1';
+                    badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>Online</span>';
+                } else {
+                    badge.className = 'px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1';
+                    badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400"></span><span>Offline Mode</span>';
+                }
+            }
+
+            toast(message, type = 'success') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                const bgColor = type === 'success' ? 'bg-slate-900 text-white border-agri-500' : 'bg-red-900 text-white border-red-500';
+                const icon = type === 'success' ? 'fa-circle-check text-emerald-400' : 'fa-triangle-exclamation text-red-400';
+                
+                toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl border-l-4 ${bgColor} shadow-xl text-sm font-medium transform transition-all duration-300 translate-y-2 opacity-0`;
+                toast.innerHTML = `<i class="fa-solid ${icon} text-lg"></i><span>${message}</span>`;
+                
+                container.appendChild(toast);
+                setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', 'translate-y-2');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3500);
+            }
+
+            navigate(viewName, params = null) {
+                this.currentView = viewName;
+                
+                // Highlight active Nav
+                document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(el => {
+                    const active = el.dataset.tab === viewName;
+                    if (el.classList.contains('nav-item')) {
+                        el.className = `nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition ${active ? 'bg-agri-700 text-white shadow-md' : 'text-slate-700 hover:bg-agri-50 hover:text-agri-800'}`;
+                    } else if (el.classList.contains('mobile-nav-item')) {
+                        el.className = `mobile-nav-item py-1 flex flex-col items-center ${active ? 'text-agri-700 font-bold' : 'text-slate-500'}`;
+                    }
+                });
+
+                const container = document.getElementById('view-container');
+                container.innerHTML = `<div class="p-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin text-3xl mb-2"></i><p>Loading module...</p></div>`;
+
+                setTimeout(async () => {
+                    switch (viewName) {
+                        case 'dashboard': await this.renderDashboard(); break;
+                        case 'pos': await this.renderPOS(); break;
+                        case 'purchases': await this.renderPurchases(); break;
+                        case 'inventory': await this.renderInventory(); break;
+                        case 'distributors': await this.renderDistributors(params); break;
+                        case 'customers': await this.renderCustomers(params); break;
+                        case 'gst': await this.renderGST(); break;
+                        case 'reports': await this.renderReports(); break;
+                        case 'settings': await this.renderSettings(); break;
+                    }
+                }, 50);
+            }
+
+            openModal(title, bodyHTML, footerButtons = '') {
+                const modal = document.getElementById('global-modal');
+                const content = document.getElementById('global-modal-content');
+                
+                content.innerHTML = `
+                    <div class="px-5 py-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+                        <h3 class="font-bold text-lg flex items-center gap-2">${title}</h3>
+                        <button onclick="app.closeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+                    </div>
+                    <div class="p-5 overflow-y-auto flex-1">${bodyHTML}</div>
+                    ${footerButtons ? `<div class="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex justify-end gap-2">${footerButtons}</div>` : ''}
+                `;
+
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    content.classList.remove('scale-95');
+                }, 10);
+            }
+
+            closeModal() {
+                const modal = document.getElementById('global-modal');
+                const content = document.getElementById('global-modal-content');
+                
+                modal.classList.add('opacity-0');
+                content.classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 200);
+            }
+
+            openMobileMoreMenu() {
+                document.getElementById('mobile-more-drawer').classList.remove('hidden');
+            }
+
+            closeMobileMoreMenu() {
+                document.getElementById('mobile-more-drawer').classList.add('hidden');
+            }
+
+            async renderDashboard() {
+                const products = await this.db.getAll('products');
+                const sales = await this.db.getAll('sales');
+                const purchases = await this.db.getAll('purchases');
+                const customers = await this.db.getAll('customers');
+                const distributors = await this.db.getAll('distributors');
+
+                const todayStr = new Date().toISOString().split('T')[0];
+
+                // Calculations
+                const todaySales = sales.filter(s => s.date === todayStr).reduce((acc, s) => acc + (s.netTotal || 0), 0);
+                const todayPurchases = purchases.filter(p => p.date === todayStr).reduce((acc, p) => acc + (p.netAmount || 0), 0);
+                
+                const customerDue = customers.reduce((acc, c) => acc + (c.outstanding || 0), 0);
+                const distributorDue = distributors.reduce((acc, d) => acc + (d.outstanding || 0), 0);
+
+                const totalStockValue = products.reduce((acc, p) => acc + ((p.currentStock || 0) * (p.purchasePrice || 0)), 0);
+                const lowStockItems = products.filter(p => (p.currentStock || 0) <= (p.minStock || 5));
+
+                const html = `
+                    <div class="space-y-6">
+                        <!-- Dashboard Welcome & Header -->
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-2xl font-black text-slate-800">Shop Overview</h2>
+                                <p class="text-slate-500 text-sm">Real-time metrics for ${this.settings.shopName}</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="app.navigate('pos')" class="btn-3d text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-plus-circle"></i> New Sale
+                                </button>
+                                <button onclick="app.openNewPurchaseModal()" class="btn-3d-amber text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-file-invoice"></i> New Purchase
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Metric Cards 3D Grid -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                            <div class="card-3d p-4 border-l-4 border-emerald-500">
+                                <div class="text-xs font-bold text-slate-400 uppercase">Today's Sales</div>
+                                <div class="text-xl md:text-2xl font-black text-slate-800 mt-1">₹${todaySales.toLocaleString('en-IN')}</div>
+                                <div class="text-[11px] text-emerald-600 font-semibold mt-1"><i class="fa-solid fa-calendar-day"></i> Live Today</div>
+                            </div>
+                            <div class="card-3d p-4 border-l-4 border-blue-500">
+                                <div class="text-xs font-bold text-slate-400 uppercase">Today's Purchases</div>
+                                <div class="text-xl md:text-2xl font-black text-slate-800 mt-1">₹${todayPurchases.toLocaleString('en-IN')}</div>
+                                <div class="text-[11px] text-blue-600 font-semibold mt-1"><i class="fa-solid fa-truck"></i> Total Stock In</div>
+                            </div>
+                            <div class="card-3d p-4 border-l-4 border-amber-500">
+                                <div class="text-xs font-bold text-slate-400 uppercase">Farmer Receivables</div>
+                                <div class="text-xl md:text-2xl font-black text-amber-600 mt-1">₹${customerDue.toLocaleString('en-IN')}</div>
+                                <div class="text-[11px] text-amber-700 font-semibold mt-1"><i class="fa-solid fa-hand-holding-dollar"></i> Total Customer Udhar</div>
+                            </div>
+                            <div class="card-3d p-4 border-l-4 border-red-500">
+                                <div class="text-xs font-bold text-slate-400 uppercase">Distributor Payables</div>
+                                <div class="text-xl md:text-2xl font-black text-red-600 mt-1">₹${distributorDue.toLocaleString('en-IN')}</div>
+                                <div class="text-[11px] text-red-700 font-semibold mt-1"><i class="fa-solid fa-credit-card"></i> Total Company Dues</div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Summary Metrics -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="card-3d p-4 flex items-center justify-between">
+                                <div>
+                                    <div class="text-xs font-bold text-slate-400 uppercase">Total Stock Asset Value</div>
+                                    <div class="text-xl font-extrabold text-agri-800">₹${totalStockValue.toLocaleString('en-IN')}</div>
+                                </div>
+                                <div class="w-12 h-12 rounded-2xl bg-agri-100 text-agri-700 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-warehouse"></i></div>
+                            </div>
+                            <div class="card-3d p-4 flex items-center justify-between">
+                                <div>
+                                    <div class="text-xs font-bold text-slate-400 uppercase">Total Active Products</div>
+                                    <div class="text-xl font-extrabold text-slate-800">${products.length} Items</div>
+                                </div>
+                                <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-cubes"></i></div>
+                            </div>
+                            <div class="card-3d p-4 flex items-center justify-between">
+                                <div>
+                                    <div class="text-xs font-bold text-slate-400 uppercase">Low Stock Alerts</div>
+                                    <div class="text-xl font-extrabold ${lowStockItems.length > 0 ? 'text-red-600' : 'text-slate-800'}">${lowStockItems.length} Products</div>
+                                </div>
+                                <div class="w-12 h-12 rounded-2xl ${lowStockItems.length > 0 ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-slate-100 text-slate-600'} flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            </div>
+                        </div>
+
+                        <!-- Charts & Low Stock Alerts Grid -->
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            
+                            <!-- Low Stock Alert Box -->
+                            <div class="card-3d p-5 lg:col-span-1 flex flex-col">
+                                <div class="flex items-center justify-between mb-4 border-b pb-2">
+                                    <h3 class="font-bold text-slate-800 text-base flex items-center gap-2"><i class="fa-solid fa-bell text-amber-500"></i> Low Stock Warning</h3>
+                                    <button onclick="app.navigate('inventory')" class="text-xs font-bold text-agri-700 hover:underline">View All</button>
+                                </div>
+                                <div class="space-y-3 flex-1 overflow-y-auto max-h-[300px]">
+                                    ${lowStockItems.length === 0 ? '<p class="text-slate-400 text-sm text-center py-8">All items are sufficiently stocked.</p>' : ''}
+                                    ${lowStockItems.map(item => `
+                                        <div class="p-3 bg-red-50/70 border border-red-200 rounded-xl flex items-center justify-between">
+                                            <div>
+                                                <div class="font-bold text-sm text-slate-800">${item.name}</div>
+                                                <div class="text-xs text-slate-500">${item.category} | SKU: ${item.sku || 'N/A'}</div>
+                                            </div>
+                                            <div class="text-right">
+                                                <div class="font-black text-sm text-red-600">${item.currentStock} ${item.unit}</div>
+                                                <div class="text-[10px] text-slate-400">Min: ${item.minStock} ${item.unit}</div>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <!-- Dynamic SVG Visual Sales Chart -->
+                            <div class="card-3d p-5 lg:col-span-2 flex flex-col">
+                                <div class="flex items-center justify-between mb-4 border-b pb-2">
+                                    <h3 class="font-bold text-slate-800 text-base flex items-center gap-2"><i class="fa-solid fa-chart-line text-agri-600"></i> Category Stock Value Distribution</h3>
+                                </div>
+                                <div class="flex-1 flex flex-col justify-center items-center py-4">
+                                    ${this.renderCategoryChart(products)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('view-container').innerHTML = html;
+            }
+
+            renderCategoryChart(products) {
+                const categoryTotals = {};
+                products.forEach(p => {
+                    const cat = p.category || 'Other';
+                    const val = (p.currentStock || 0) * (p.purchasePrice || 0);
+                    categoryTotals[cat] = (categoryTotals[cat] || 0) + val;
+                });
+
+                const categories = Object.keys(categoryTotals);
+                const values = Object.values(categoryTotals);
+                const maxVal = Math.max(...values, 1000);
+
+                if (categories.length === 0) return '<p class="text-slate-400 text-sm">No inventory data to chart.</p>';
+
+                return `
+                    <div class="w-full space-y-3">
+                        ${categories.map((cat, idx) => {
+                            const val = categoryTotals[cat];
+                            const pct = Math.round((val / maxVal) * 100);
+                            const colors = ['bg-emerald-500', 'bg-blue-500', 'bg-amber-500', 'bg-purple-500', 'bg-rose-500', 'bg-teal-500'];
+                            const color = colors[idx % colors.length];
+                            return `
+                                <div>
+                                    <div class="flex justify-between text-xs font-bold mb-1">
+                                        <span class="text-slate-700">${cat}</span>
+                                        <span class="text-slate-600">₹${val.toLocaleString('en-IN')}</span>
+                                    </div>
+                                    <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full ${color} rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+
+            async renderDistributors(selectedDistributorId = null) {
+                const distributors = await this.db.getAll('distributors');
+                
+                if (selectedDistributorId) {
+                    await this.renderDistributorAccountLedger(selectedDistributorId);
+                    return;
+                }
+
+                const html = `
+                    <div class="space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-2xl font-black text-slate-800">Distributor Management</h2>
+                                <p class="text-slate-500 text-sm">Company and Seed Supplier Accounts & Ledgers</p>
+                            </div>
+                            <button onclick="app.openDistributorModal()" class="btn-3d text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-plus"></i> Add Distributor
+                            </button>
+                        </div>
+
+                        <!-- Search Bar -->
+                        <div class="card-3d p-3 flex items-center gap-3">
+                            <i class="fa-solid fa-magnifying-glass text-slate-400 ml-2"></i>
+                            <input type="text" id="distributor-search" oninput="app.filterDistributorsList()" placeholder="Search distributor firm name, place, phone..." class="w-full bg-transparent border-none text-sm focus:outline-none text-slate-800 font-medium">
+                        </div>
+
+                        <!-- Distributor List Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="distributor-grid">
+                            ${distributors.length === 0 ? '<div class="col-span-full text-center py-12 text-slate-400">No distributors added yet. Click "Add Distributor" to create one.</div>' : ''}
+                            ${distributors.map(d => `
+                                <div class="card-3d p-5 flex flex-col justify-between border-t-4 border-agri-600 hover:border-amber-500 relative group">
+                                    <div class="space-y-2">
+                                        <div class="flex items-start justify-between">
+                                            <h3 class="font-extrabold text-slate-800 text-lg leading-tight cursor-pointer" onclick="app.renderDistributors('${d.id}')">${d.firmName}</h3>
+                                            <div class="flex items-center gap-1">
+                                                <span class="text-xs px-2 py-0.5 rounded bg-slate-100 font-bold text-slate-600">${d.place || 'N/A'}</span>
+                                                <button onclick="event.stopPropagation(); app.confirmDeleteDistributor('${d.id}', '${d.firmName.replace(/'/g, "\\'")}')" class="text-red-500 hover:bg-red-50 p-1.5 rounded-lg text-xs" title="Delete Distributor">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="text-xs text-slate-500 space-y-1 cursor-pointer" onclick="app.renderDistributors('${d.id}')">
+                                            <div><i class="fa-solid fa-phone w-4 text-agri-600"></i> ${d.phone || 'N/A'}</div>
+                                            <div><i class="fa-solid fa-file-invoice w-4 text-agri-600"></i> GSTIN: ${d.gstin || 'Unregistered'}</div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between cursor-pointer" onclick="app.renderDistributors('${d.id}')">
+                                        <div>
+                                            <div class="text-[10px] uppercase font-bold text-slate-400">Net Payable Balance</div>
+                                            <div class="text-lg font-black ${d.outstanding > 0 ? 'text-red-600' : 'text-emerald-600'}">₹${(d.outstanding || 0).toLocaleString('en-IN')}</div>
+                                        </div>
+                                        <span class="text-xs font-bold text-agri-700 bg-agri-50 px-3 py-1.5 rounded-lg border border-agri-200">Open Ledger <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('view-container').innerHTML = html;
+            }
+
+            filterDistributorsList() {
+                const query = document.getElementById('distributor-search').value.toLowerCase();
+                const cards = document.querySelectorAll('#distributor-grid > div');
+                cards.forEach(card => {
+                    const text = card.innerText.toLowerCase();
+                    card.style.display = text.includes(query) ? 'flex' : 'none';
+                });
+            }
+
+            openDistributorModal(distributor = null) {
+                const html = `
+                    <form id="distributor-form" onsubmit="app.saveDistributor(event, '${distributor ? distributor.id : ''}')" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Firm Name *</label>
+                            <input type="text" id="firmName" required value="${distributor ? distributor.firmName : ''}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium focus:ring-2 focus:ring-agri-500 focus:outline-none" placeholder="e.g. Onkar Seeds Pvt Ltd">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Place / City</label>
+                                <input type="text" id="place" value="${distributor ? distributor.place || '' : ''}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium" placeholder="e.g. Karnal">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Phone Number</label>
+                                <input type="text" id="phone" value="${distributor ? distributor.phone || '' : ''}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium" placeholder="9876543210">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">GSTIN</label>
+                                <input type="text" id="gstin" value="${distributor ? distributor.gstin || '' : ''}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium" placeholder="09AAAAA0000A1Z5">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Opening Balance (₹)</label>
+                                <input type="number" id="openingBalance" step="0.01" value="${distributor ? distributor.openingBalance || 0 : 0}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium" placeholder="0">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Notes</label>
+                            <textarea id="notes" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium" placeholder="Additional details...">${distributor ? distributor.notes || '' : ''}</textarea>
+                        </div>
+                    </form>
+                `;
+
+                const buttons = `
+                    <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-100">Cancel</button>
+                    <button type="submit" form="distributor-form" class="btn-3d text-white px-5 py-2 rounded-xl text-sm font-bold">Save Distributor</button>
+                `;
+
+                this.openModal(distributor ? 'Edit Distributor' : 'Add New Distributor', html, buttons);
+            }
+
+            async saveDistributor(e, id) {
+                e.preventDefault();
+                const firmName = document.getElementById('firmName').value.trim();
+                const place = document.getElementById('place').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const gstin = document.getElementById('gstin').value.trim();
+                const openingBalance = parseFloat(document.getElementById('openingBalance').value) || 0;
+                const notes = document.getElementById('notes').value.trim();
+
+                const item = {
+                    id: id || undefined,
+                    firmName,
+                    place,
+                    phone,
+                    gstin,
+                    openingBalance,
+                    outstanding: openingBalance,
+                    notes,
+                    updatedAt: new Date().toISOString()
+                };
+
+                await this.db.save('distributors', item);
+                this.closeModal();
+                this.toast('Distributor saved successfully!');
+                this.renderDistributors();
+            }
+
+            confirmDeleteDistributor(distributorId, firmName) {
+                const html = `
+                    <div class="space-y-4">
+                        <div class="p-3 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm">
+                            <i class="fa-solid fa-triangle-exclamation text-red-600 mr-1"></i> Are you sure you want to delete distributor <strong>${firmName}</strong>?
+                        </div>
+                        <p class="text-xs text-slate-600">This action will remove the distributor profile. Please select how to handle existing bills & ledger payments:</p>
+                        <div class="space-y-2 text-xs">
+                            <label class="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
+                                <input type="radio" name="delete_dist_mode" value="unlink" checked class="text-agri-600"> Unlink purchase bills & payments (keep history)
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
+                                <input type="radio" name="delete_dist_mode" value="purge" class="text-red-600"> Delete ALL associated purchase bills and payments
+                            </label>
+                        </div>
+                    </div>
+                `;
+
+                const buttons = `
+                    <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Cancel</button>
+                    <button onclick="app.deleteDistributor('${distributorId}')" class="btn-3d-danger text-white px-5 py-2 rounded-xl text-sm font-bold"><i class="fa-solid fa-trash-can mr-1"></i> Confirm Delete</button>
+                `;
+
+                this.openModal('Delete Distributor Account', html, buttons);
+            }
+
+            async deleteDistributor(distributorId) {
+                const mode = document.querySelector('input[name="delete_dist_mode"]:checked')?.value || 'unlink';
+
+                if (mode === 'purge') {
+                    const allPurchases = await this.db.getAll('purchases');
+                    const allPayments = await this.db.getAll('payments');
+
+                    const distPurchases = allPurchases.filter(p => p.distributorId === distributorId);
+                    const distPayments = allPayments.filter(p => p.distributorId === distributorId);
+
+                    for (let p of distPurchases) await this.db.delete('purchases', p.id);
+                    for (let pay of distPayments) await this.db.delete('payments', pay.id);
+                }
+
+                await this.db.delete('distributors', distributorId);
+                this.closeModal();
+                this.toast('Distributor deleted successfully!');
+                this.renderDistributors();
+            }
+
+            async renderDistributorAccountLedger(distributorId) {
+                const distributor = await this.db.get('distributors', distributorId);
+                if (!distributor) {
+                    this.renderDistributors();
+                    return;
+                }
+                const allPurchases = await this.db.getAll('purchases');
+                const allPayments = await this.db.getAll('payments');
+
+                const purchases = allPurchases.filter(p => p.distributorId === distributorId);
+                const payments = allPayments.filter(p => p.distributorId === distributorId);
+
+                // Build Ledger Entries Chronologically
+                let ledger = [];
+                if (distributor.openingBalance > 0) {
+                    ledger.push({
+                        date: 'Opening',
+                        desc: 'Opening Balance',
+                        debit: distributor.openingBalance, // We owe them
+                        credit: 0,
+                        type: 'OPENING'
+                    });
+                }
+
+                purchases.forEach(p => {
+                    ledger.push({
+                        date: p.date,
+                        desc: `Purchase Bill #${p.billNo} ${p.stockStatus === 'PENDING' ? '(Pending Items)' : ''}`,
+                        debit: p.netAmount || 0,
+                        credit: 0,
+                        refId: p.id,
+                        type: 'PURCHASE'
+                    });
+                });
+
+                payments.forEach(pay => {
+                    ledger.push({
+                        date: pay.date,
+                        desc: `Payment (${pay.method}) ${pay.note ? '- ' + pay.note : ''}`,
+                        debit: 0,
+                        credit: pay.amount || 0,
+                        refId: pay.id,
+                        type: 'PAYMENT'
+                    });
+                });
+
+                // Sort by Date
+                ledger.sort((a, b) => (a.date > b.date ? 1 : -1));
+
+                // Calculate Running Balance
+                let runningBalance = 0;
+                ledger.forEach(entry => {
+                    runningBalance += (entry.debit - entry.credit);
+                    entry.balance = runningBalance;
+                });
+
+                // Recalculate Total Outstanding and update
+                distributor.outstanding = runningBalance;
+                await this.db.save('distributors', distributor);
+
+                const html = `
+                    <div class="space-y-6">
+                        <!-- Header with Actions -->
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <button onclick="app.renderDistributors()" class="p-2 bg-white border border-slate-200 rounded-xl hover:bg-slate-50"><i class="fa-solid fa-arrow-left text-slate-600"></i></button>
+                                <div>
+                                    <h2 class="text-2xl font-black text-slate-800">${distributor.firmName}</h2>
+                                    <p class="text-xs text-slate-500">${distributor.place ? distributor.place + ' | ' : ''} Phone: ${distributor.phone || 'N/A'} | GSTIN: ${distributor.gstin || 'N/A'}</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="app.openDistributorPaymentModal('${distributor.id}')" class="btn-3d text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2">
+                                    <i class="fa-solid fa-hand-holding-dollar"></i> Record Payment
+                                </button>
+                                <button onclick="app.confirmDeleteDistributor('${distributor.id}', '${distributor.firmName.replace(/'/g, "\\'")}')" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-xl text-sm font-bold flex items-center gap-1.5 border border-red-300">
+                                    <i class="fa-solid fa-trash-can"></i> Delete Distributor
+                                </button>
+                                <button onclick="window.print()" class="bg-slate-800 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2">
+                                    <i class="fa-solid fa-print"></i> Print Statement
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Summary Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="card-3d p-4 border-l-4 border-blue-500">
+                                <div class="text-xs font-bold text-slate-400 uppercase">Total Purchases</div>
+                                <div class="text-xl font-black text-slate-800 mt-1">₹${purchases.reduce((a,b)=>a+(b.netAmount||0),0).toLocaleString('en-IN')}</div>
+                                <div class="text-[11px] text-slate-500 mt-1">${purchases.length} Purchase Bills</div>
+                            </div>
+                            <div class="card-3d p-4 border-l-4 border-emerald-500">
+                                <div class="text-xs font-bold text-slate-400 uppercase">Total Paid Amount</div>
+                                <div class="text-xl font-black text-emerald-600 mt-1">₹${payments.reduce((a,b)=>a+(b.amount||0),0).toLocaleString('en-IN')}</div>
+                                <div class="text-[11px] text-slate-500 mt-1">${payments.length} Payment Receipts</div>
+                            </div>
+                            <div class="card-3d p-4 border-l-4 border-red-500">
+                                <div class="text-xs font-bold text-slate-400 uppercase">Current Outstanding Balance</div>
+                                <div class="text-xl font-black text-red-600 mt-1">₹${runningBalance.toLocaleString('en-IN')}</div>
+                                <div class="text-[11px] text-red-700 font-bold mt-1">Net Payable Amount</div>
+                            </div>
+                        </div>
+
+                        <!-- Running Ledger Table -->
+                        <div class="card-3d p-5 space-y-4" id="printable-area">
+                            <div class="flex items-center justify-between border-b pb-3">
+                                <h3 class="font-black text-slate-800 text-base">Statement of Account Ledger</h3>
+                                <span class="text-xs font-bold text-slate-400">SHANKAR BEEJ BHANDAR</span>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-sm">
+                                    <thead>
+                                        <tr class="bg-slate-100 border-b border-slate-200 text-slate-700 font-bold text-xs uppercase">
+                                            <th class="p-3">Date</th>
+                                            <th class="p-3">Description</th>
+                                            <th class="p-3 text-right">Debit / Purchase (₹)</th>
+                                            <th class="p-3 text-right">Credit / Paid (₹)</th>
+                                            <th class="p-3 text-right">Running Balance (₹)</th>
+                                            <th class="p-3 text-right no-print">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100">
+                                        ${ledger.length === 0 ? '<tr><td colspan="6" class="p-4 text-center text-slate-400">No transactions recorded for this distributor.</td></tr>' : ''}
+                                        ${ledger.map(row => `
+                                            <tr class="hover:bg-slate-50/80">
+                                                <td class="p-3 font-semibold text-slate-700">${row.date}</td>
+                                                <td class="p-3 font-medium text-slate-800">${row.desc}</td>
+                                                <td class="p-3 text-right font-bold text-slate-800">${row.debit > 0 ? '₹' + row.debit.toLocaleString('en-IN') : '-'}</td>
+                                                <td class="p-3 text-right font-bold text-emerald-600">${row.credit > 0 ? '₹' + row.credit.toLocaleString('en-IN') : '-'}</td>
+                                                <td class="p-3 text-right font-black ${row.balance > 0 ? 'text-red-600' : 'text-slate-800'}">₹${row.balance.toLocaleString('en-IN')}</td>
+                                                <td class="p-3 text-right no-print">
+                                                    ${row.type === 'PURCHASE' ? `<button onclick="app.confirmDeletePurchaseBill('${row.refId}', '${distributor.id}')" class="text-red-500 hover:text-red-700 p-1" title="Delete Purchase Bill"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                                                    ${row.type === 'PAYMENT' ? `<button onclick="app.confirmDeletePayment('${row.refId}', 'distributor', '${distributor.id}')" class="text-red-500 hover:text-red-700 p-1" title="Delete Payment"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('view-container').innerHTML = html;
+            }
+
+            openDistributorPaymentModal(distributorId) {
+                const html = `
+                    <form id="dist-pay-form" onsubmit="app.saveDistributorPayment(event, '${distributorId}')" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Payment Date *</label>
+                            <input type="date" id="payDate" required value="${new Date().toISOString().split('T')[0]}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Amount Paid (₹) *</label>
+                            <input type="number" id="payAmount" step="0.01" required min="1" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-bold text-emerald-600 text-lg" placeholder="0.00">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Payment Method</label>
+                            <select id="payMethod" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                                <option value="Cash">Cash</option>
+                                <option value="UPI / Online">UPI / PhonePe / Paytm</option>
+                                <option value="Bank Transfer">Bank Transfer / NEFT</option>
+                                <option value="Cheque">Cheque</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Note / Reference</label>
+                            <input type="text" id="payNote" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium" placeholder="Transaction ID, Cheque No, etc.">
+                        </div>
+                    </form>
+                `;
+
+                const buttons = `
+                    <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Cancel</button>
+                    <button type="submit" form="dist-pay-form" class="btn-3d text-white px-5 py-2 rounded-xl text-sm font-bold">Save Payment</button>
+                `;
+
+                this.openModal('Record Distributor Payment', html, buttons);
+            }
+
+            async saveDistributorPayment(e, distributorId) {
+                e.preventDefault();
+                const payDate = document.getElementById('payDate').value;
+                const payAmount = parseFloat(document.getElementById('payAmount').value);
+                const payMethod = document.getElementById('payMethod').value;
+                const payNote = document.getElementById('payNote').value.trim();
+
+                const payment = {
+                    distributorId,
+                    date: payDate,
+                    amount: payAmount,
+                    method: payMethod,
+                    note: payNote,
+                    createdAt: new Date().toISOString()
+                };
+
+                await this.db.save('payments', payment);
+                this.closeModal();
+                this.toast('Payment recorded successfully!');
+                this.renderDistributorAccountLedger(distributorId);
+            }
+
+            async renderPurchases() {
+                const purchases = await this.db.getAll('purchases');
+                const distributors = await this.db.getAll('distributors');
+
+                const html = `
+                    <div class="space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-2xl font-black text-slate-800">Purchase Bills</h2>
+                                <p class="text-slate-500 text-sm">Stock Entry & Supplier Purchase Bills</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="app.openOCRModal()" class="bg-purple-700 hover:bg-purple-800 text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 shadow-sm">
+                                    <i class="fa-solid fa-camera"></i> Scan / OCR Bill
+                                </button>
+                                <button onclick="app.openNewPurchaseModal()" class="btn-3d text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-plus"></i> New Purchase Bill
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Purchase List Table -->
+                        <div class="card-3d p-5">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-sm">
+                                    <thead>
+                                        <tr class="bg-slate-100 border-b border-slate-200 text-slate-700 font-bold text-xs uppercase">
+                                            <th class="p-3">Date</th>
+                                            <th class="p-3">Bill No</th>
+                                            <th class="p-3">Distributor</th>
+                                            <th class="p-3 text-center">Stock Status</th>
+                                            <th class="p-3 text-right">Net Bill Amount (₹)</th>
+                                            <th class="p-3 text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100">
+                                        ${purchases.length === 0 ? '<tr><td colspan="6" class="p-4 text-center text-slate-400">No purchase bills saved. Click "New Purchase Bill" to start.</td></tr>' : ''}
+                                        ${purchases.map(p => {
+                                            const dist = distributors.find(d => d.id === p.distributorId);
+                                            const isPending = p.stockStatus === 'PENDING';
+                                            return `
+                                                <tr class="hover:bg-slate-50">
+                                                    <td class="p-3 font-semibold text-slate-700">${p.date}</td>
+                                                    <td class="p-3 font-bold text-slate-800">#${p.billNo}</td>
+                                                    <td class="p-3 font-medium text-slate-800">${dist ? dist.firmName : 'Unknown / Unlinked'}</td>
+                                                    <td class="p-3 text-center">
+                                                        ${isPending ? 
+                                                            `<span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-800 border border-amber-300">Stock Update Pending</span>` : 
+                                                            `<span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">Stock Updated</span>`
+                                                        }
+                                                    </td>
+                                                    <td class="p-3 text-right font-black text-slate-800">₹${(p.netAmount || 0).toLocaleString('en-IN')}</td>
+                                                    <td class="p-3 text-right space-x-1">
+                                                        ${isPending ? 
+                                                            `<button onclick="app.openAddItemsToPurchaseModal('${p.id}')" class="px-3 py-1 bg-agri-600 hover:bg-agri-700 text-white rounded-lg text-xs font-bold"><i class="fa-solid fa-boxes-stacked"></i> Add Items</button>` : 
+                                                            `<button onclick="app.viewPurchaseDetailModal('${p.id}')" class="px-3 py-1 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg text-xs font-bold"><i class="fa-solid fa-eye"></i> View</button>`
+                                                        }
+                                                        <button onclick="app.confirmDeletePurchaseBill('${p.id}')" class="px-2.5 py-1 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg text-xs font-bold border border-red-300" title="Delete Purchase Bill"><i class="fa-solid fa-trash-can"></i></button>
+                                                    </td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('view-container').innerHTML = html;
+            }
+
+            confirmDeletePurchaseBill(purchaseId, redirectDistributorId = null) {
+                this.db.get('purchases', purchaseId).then(purchase => {
+                    if (!purchase) return;
+
+                    const html = `
+                        <div class="space-y-4">
+                            <div class="p-3 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm">
+                                <i class="fa-solid fa-triangle-exclamation text-red-600 mr-1"></i> Confirm deletion of Purchase Bill <strong>#${purchase.billNo}</strong> (Amount: ₹${purchase.netAmount})?
+                            </div>
+                            ${purchase.stockStatus === 'UPDATED' && purchase.items && purchase.items.length > 0 ? `
+                                <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 space-y-1">
+                                    <strong>Stock Reversal Option:</strong>
+                                    <label class="flex items-center gap-2 cursor-pointer mt-1">
+                                        <input type="checkbox" id="revert_purchase_stock" checked class="rounded text-agri-600"> Automatically deduct added product quantities back from inventory
+                                    </label>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+
+                    const buttons = `
+                        <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Cancel</button>
+                        <button onclick="app.deletePurchaseBill('${purchaseId}', '${redirectDistributorId || ''}')" class="btn-3d-danger text-white px-5 py-2 rounded-xl text-sm font-bold"><i class="fa-solid fa-trash-can mr-1"></i> Delete Bill</button>
+                    `;
+
+                    this.openModal('Delete Purchase Bill', html, buttons);
+                });
+            }
+
+            async deletePurchaseBill(purchaseId, redirectDistributorId = '') {
+                const purchase = await this.db.get('purchases', purchaseId);
+                if (!purchase) return;
+
+                const revertStock = document.getElementById('revert_purchase_stock')?.checked;
+
+                if (revertStock && purchase.items) {
+                    for (let item of purchase.items) {
+                        const prod = await this.db.get('products', item.productId);
+                        if (prod) {
+                            prod.currentStock = Math.max(0, (prod.currentStock || 0) - item.qty);
+                            await this.db.save('products', prod);
+
+                            await this.db.save('stock_ledger', {
+                                date: new Date().toISOString().split('T')[0],
+                                productId: prod.id,
+                                productName: prod.name,
+                                type: 'Purchase Deleted (Reversal)',
+                                ref: `Bill #${purchase.billNo}`,
+                                inQty: 0,
+                                outQty: item.qty,
+                                balance: prod.currentStock,
+                                createdAt: new Date().toISOString()
+                            });
+                        }
+                    }
+                }
+
+                await this.db.delete('purchases', purchaseId);
+                this.closeModal();
+                this.toast('Purchase Bill deleted!');
+
+                if (redirectDistributorId) {
+                    this.renderDistributorAccountLedger(redirectDistributorId);
+                } else {
+                    this.renderPurchases();
+                }
+            }
+
+            confirmDeletePayment(paymentId, type, redirectId) {
+                const html = `
+                    <p class="text-sm text-slate-700">Are you sure you want to delete this payment record? This will adjust the running balance ledger.</p>
+                `;
+                const buttons = `
+                    <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Cancel</button>
+                    <button onclick="app.deletePayment('${paymentId}', '${type}', '${redirectId}')" class="btn-3d-danger text-white px-5 py-2 rounded-xl text-sm font-bold">Delete Payment</button>
+                `;
+                this.openModal('Delete Payment Record', html, buttons);
+            }
+
+            async deletePayment(paymentId, type, redirectId) {
+                await this.db.delete('payments', paymentId);
+                this.closeModal();
+                this.toast('Payment deleted!');
+                if (type === 'distributor') {
+                    this.renderDistributorAccountLedger(redirectId);
+                }
+            }
+
+            async openNewPurchaseModal() {
+                const distributors = await this.db.getAll('distributors');
+                const products = await this.db.getAll('products');
+
+                if (distributors.length === 0) {
+                    this.toast('Please add at least one Distributor first.', 'error');
+                    this.navigate('distributors');
+                    return;
+                }
+
+                const html = `
+                    <form id="purchase-form" onsubmit="app.savePurchaseBill(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Distributor *</label>
+                                <select id="purDistributorId" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                                    ${distributors.map(d => `<option value="${d.id}">${d.firmName}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Bill Date *</label>
+                                <input type="date" id="purDate" required value="${new Date().toISOString().split('T')[0]}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Bill Number *</label>
+                                <input type="text" id="purBillNo" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-bold" placeholder="e.g. 1024">
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-800 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info text-blue-600 text-base"></i>
+                            <span>Note: Items are <strong>OPTIONAL</strong>. You can save bill amount now and add product items later to update inventory stock.</span>
+                        </div>
+
+                        <!-- Product Items Section -->
+                        <div class="border border-slate-200 rounded-xl p-3 space-y-3 bg-slate-50/50">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-xs uppercase text-slate-700">Product Items (Optional)</span>
+                                <button type="button" onclick="app.addPurchaseItemRow()" class="text-xs bg-agri-100 hover:bg-agri-200 text-agri-800 px-3 py-1 rounded-lg font-bold"><i class="fa-solid fa-plus"></i> Add Product Row</button>
+                            </div>
+                            <div id="purchase-items-container" class="space-y-2">
+                                <!-- Dynamic Item Rows Injected Here -->
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Net Bill Amount (₹) *</label>
+                            <input type="number" id="purNetAmount" step="0.01" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-base font-black text-slate-800" placeholder="14500.00">
+                        </div>
+                    </form>
+                `;
+
+                const buttons = `
+                    <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Cancel</button>
+                    <button type="submit" form="purchase-form" class="btn-3d text-white px-5 py-2 rounded-xl text-sm font-bold">Save Purchase Bill</button>
+                `;
+
+                this.openModal('New Purchase Bill', html, buttons);
+                this.windowProductsCache = products;
+            }
+
+            addPurchaseItemRow(item = null) {
+                const container = document.getElementById('purchase-items-container');
+                const rowId = 'p_row_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+                const products = this.windowProductsCache || [];
+
+                const div = document.createElement('div');
+                div.id = rowId;
+                div.className = "grid grid-cols-12 gap-2 items-center bg-white p-2 rounded-lg border border-slate-200 text-xs";
+                div.innerHTML = `
+                    <div class="col-span-5">
+                        <select class="p-prod-id w-full p-1.5 border border-slate-300 rounded-md font-medium" onchange="app.calcPurchaseRowTotal('${rowId}')">
+                            <option value="">-- Select Product --</option>
+                            ${products.map(p => `<option value="${p.id}" ${item && item.productId === p.id ? 'selected' : ''}>${p.name} (${p.unit})</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="col-span-2">
+                        <input type="number" class="p-qty w-full p-1.5 border border-slate-300 rounded-md font-bold" placeholder="Qty" value="${item ? item.qty : ''}" oninput="app.calcPurchaseRowTotal('${rowId}')">
+                    </div>
+                    <div class="col-span-2">
+                        <input type="number" step="0.01" class="p-rate w-full p-1.5 border border-slate-300 rounded-md font-medium" placeholder="Rate" value="${item ? item.rate : ''}" oninput="app.calcPurchaseRowTotal('${rowId}')">
+                    </div>
+                    <div class="col-span-2 text-right font-black text-slate-800 p-amount">
+                        ₹${item ? (item.qty * item.rate) : 0}
+                    </div>
+                    <div class="col-span-1 text-center">
+                        <button type="button" onclick="document.getElementById('${rowId}').remove(); app.calcPurchaseGrandTotal();" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+
+                container.appendChild(div);
+            }
+
+            calcPurchaseRowTotal(rowId) {
+                const row = document.getElementById(rowId);
+                const qty = parseFloat(row.querySelector('.p-qty').value) || 0;
+                const rate = parseFloat(row.querySelector('.p-rate').value) || 0;
+                const amount = qty * rate;
+                row.querySelector('.p-amount').innerText = '₹' + amount.toFixed(2);
+                this.calcPurchaseGrandTotal();
+            }
+
+            calcPurchaseGrandTotal() {
+                let total = 0;
+                document.querySelectorAll('#purchase-items-container > div').forEach(row => {
+                    const qty = parseFloat(row.querySelector('.p-qty').value) || 0;
+                    const rate = parseFloat(row.querySelector('.p-rate').value) || 0;
+                    total += (qty * rate);
+                });
+
+                if (total > 0) {
+                    document.getElementById('purNetAmount').value = total.toFixed(2);
+                }
+            }
+
+            async savePurchaseBill(e) {
+                e.preventDefault();
+                const distributorId = document.getElementById('purDistributorId').value;
+                const date = document.getElementById('purDate').value;
+                const billNo = document.getElementById('purBillNo').value.trim();
+                const netAmount = parseFloat(document.getElementById('purNetAmount').value);
+
+                // Collect Items if entered
+                const items = [];
+                document.querySelectorAll('#purchase-items-container > div').forEach(row => {
+                    const productId = row.querySelector('.p-prod-id').value;
+                    const qty = parseFloat(row.querySelector('.p-qty').value) || 0;
+                    const rate = parseFloat(row.querySelector('.p-rate').value) || 0;
+                    if (productId && qty > 0) {
+                        items.push({ productId, qty, rate, amount: qty * rate });
+                    }
+                });
+
+                const hasItems = items.length > 0;
+
+                const purchase = {
+                    distributorId,
+                    date,
+                    billNo,
+                    netAmount,
+                    items,
+                    stockStatus: hasItems ? 'UPDATED' : 'PENDING',
+                    createdAt: new Date().toISOString()
+                };
+
+                const savedPurchase = await this.db.save('purchases', purchase);
+
+                // If Items Provided, Update Inventory Stock Immediately
+                if (hasItems) {
+                    await this.processPurchaseStockUpdate(savedPurchase);
+                }
+
+                this.closeModal();
+                this.toast('Purchase Bill saved successfully!');
+                this.renderPurchases();
+            }
+
+            async openAddItemsToPurchaseModal(purchaseId) {
+                const purchase = await this.db.get('purchases', purchaseId);
+                const products = await this.db.getAll('products');
+                this.windowProductsCache = products;
+
+                const html = `
+                    <div class="space-y-4">
+                        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900">
+                            <strong>Bill #${purchase.billNo}</strong> | Date: ${purchase.date} | Net Bill Amount: <strong>₹${purchase.netAmount.toLocaleString('en-IN')}</strong>
+                        </div>
+                        <p class="text-xs font-bold text-slate-700 uppercase">Add Received Inventory Products:</p>
+                        
+                        <div id="purchase-items-container" class="space-y-2 max-h-[300px] overflow-y-auto">
+                            <!-- Items Rows -->
+                        </div>
+                        <button type="button" onclick="app.addPurchaseItemRow()" class="text-xs bg-agri-100 hover:bg-agri-200 text-agri-800 px-3 py-1.5 rounded-lg font-bold w-full"><i class="fa-solid fa-plus"></i> Add Product Item</button>
+                    </div>
+                `;
+
+                const buttons = `
+                    <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Cancel</button>
+                    <button onclick="app.confirmAddItemsToPurchase('${purchaseId}')" class="btn-3d text-white px-5 py-2 rounded-xl text-sm font-bold">Update Inventory Stock</button>
+                `;
+
+                this.openModal('Add Stock Items to Purchase Bill', html, buttons);
+                this.addPurchaseItemRow();
+            }
+
+            async confirmAddItemsToPurchase(purchaseId) {
+                const purchase = await this.db.get('purchases', purchaseId);
+                const items = [];
+                document.querySelectorAll('#purchase-items-container > div').forEach(row => {
+                    const productId = row.querySelector('.p-prod-id').value;
+                    const qty = parseFloat(row.querySelector('.p-qty').value) || 0;
+                    const rate = parseFloat(row.querySelector('.p-rate').value) || 0;
+                    if (productId && qty > 0) {
+                        items.push({ productId, qty, rate, amount: qty * rate });
+                    }
+                });
+
+                if (items.length === 0) {
+                    this.toast('Please add at least one valid product item.', 'error');
+                    return;
+                }
+
+                purchase.items = items;
+                purchase.stockStatus = 'UPDATED';
+                await this.db.save('purchases', purchase);
+
+                await this.processPurchaseStockUpdate(purchase);
+
+                this.closeModal();
+                this.toast('Stock updated in inventory!');
+                this.renderPurchases();
+            }
+
+            async processPurchaseStockUpdate(purchase) {
+                for (let item of purchase.items) {
+                    const prod = await this.db.get('products', item.productId);
+                    if (prod) {
+                        const oldStock = prod.currentStock || 0;
+                        prod.currentStock = oldStock + item.qty;
+                        if (item.rate > 0) prod.purchasePrice = item.rate; // Update latest purchase rate
+                        await this.db.save('products', prod);
+
+                        // Save Stock Ledger Movement Record
+                        await this.db.save('stock_ledger', {
+                            date: purchase.date,
+                            productId: prod.id,
+                            productName: prod.name,
+                            type: 'Purchase In',
+                            ref: `Bill #${purchase.billNo}`,
+                            inQty: item.qty,
+                            outQty: 0,
+                            balance: prod.currentStock,
+                            createdAt: new Date().toISOString()
+                        });
+                    }
+                }
+            }
+
+            async viewPurchaseDetailModal(purchaseId) {
+                const purchase = await this.db.get('purchases', purchaseId);
+                const products = await this.db.getAll('products');
+
+                const html = `
+                    <div class="space-y-4">
+                        <div class="flex justify-between text-xs border-b pb-2">
+                            <div>Bill No: <strong>#${purchase.billNo}</strong></div>
+                            <div>Date: <strong>${purchase.date}</strong></div>
+                            <div>Net Amount: <strong>₹${purchase.netAmount}</strong></div>
+                        </div>
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-100 font-bold border-b">
+                                    <th class="p-2">Product</th>
+                                    <th class="p-2 text-center">Qty</th>
+                                    <th class="p-2 text-right">Rate</th>
+                                    <th class="p-2 text-right">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y">
+                                ${purchase.items.map(i => {
+                                    const p = products.find(prod => prod.id === i.productId);
+                                    return `
+                                        <tr>
+                                            <td class="p-2 font-medium">${p ? p.name : 'Item'}</td>
+                                            <td class="p-2 text-center font-bold">${i.qty}</td>
+                                            <td class="p-2 text-right">₹${i.rate}</td>
+                                            <td class="p-2 text-right font-bold">₹${i.amount}</td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                this.openModal(`Purchase Bill #${purchase.billNo} Details`, html);
+            }
+
+            openOCRModal() {
+                const html = `
+                    <div class="space-y-4">
+                        <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center space-y-3 bg-slate-50 cursor-pointer hover:bg-slate-100 transition" onclick="document.getElementById('ocr-file-input').click()">
+                            <i class="fa-solid fa-cloud-arrow-up text-4xl text-purple-600"></i>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">Upload or Photograph Distributor Bill</h4>
+                                <p class="text-xs text-slate-500">Supports JPG, PNG, PDF formats</p>
+                            </div>
+                            <input type="file" id="ocr-file-input" class="hidden" accept="image/*" onchange="app.simulateOCRProcess(event)">
+                        </div>
+
+                        <div id="ocr-processing-indicator" class="hidden text-center py-6 space-y-2">
+                            <i class="fa-solid fa-spinner fa-spin text-3xl text-purple-600"></i>
+                            <p class="text-xs font-bold text-purple-800">Processing Document OCR... Extracting Bill Number & Products</p>
+                        </div>
+                    </div>
+                `;
+
+                this.openModal('OCR Scan Supplier Purchase Bill', html);
+            }
+
+            async simulateOCRProcess(e) {
+                if (!e.target.files || !e.target.files[0]) return;
+                
+                document.getElementById('ocr-processing-indicator').classList.remove('hidden');
+
+                setTimeout(async () => {
+                    const products = await this.db.getAll('products');
+                    const distributors = await this.db.getAll('distributors');
+
+                    const sampleProduct = products[0] || { id: '', name: 'DAP Fertilizer 50kg' };
+                    const sampleDist = distributors[0] || { id: '' };
+
+                    this.closeModal();
+
+                    // Open Purchase Modal pre-filled with extracted OCR values
+                    this.openNewPurchaseModal();
+                    
+                    setTimeout(() => {
+                        if (sampleDist.id) document.getElementById('purDistributorId').value = sampleDist.id;
+                        document.getElementById('purBillNo').value = 'OCR-' + Math.floor(1000 + Math.random() * 9000);
+                        document.getElementById('purNetAmount').value = '12500';
+
+                        if (sampleProduct.id) {
+                            this.addPurchaseItemRow({ productId: sampleProduct.id, qty: 10, rate: 1250 });
+                        }
+
+                        this.toast('OCR Data Extracted! Please review before saving.');
+                    }, 200);
+
+                }, 1200);
+            }
+
+            async renderInventory() {
+                const products = await this.db.getAll('products');
+
+                const html = `
+                    <div class="space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-2xl font-black text-slate-800">Products & Inventory</h2>
+                                <p class="text-slate-500 text-sm">Stock Catalog & Date-wise Stock Movement History</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="app.openStockAdjustmentModal()" class="btn-3d-amber text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-sliders"></i> Stock Adjustment
+                                </button>
+                                <button onclick="app.openProductModal()" class="btn-3d text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-plus"></i> Add Product
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Product List Table -->
+                        <div class="card-3d p-5">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-sm">
+                                    <thead>
+                                        <tr class="bg-slate-100 border-b border-slate-200 text-slate-700 font-bold text-xs uppercase">
+                                            <th class="p-3">Product Name</th>
+                                            <th class="p-3">Category</th>
+                                            <th class="p-3 text-center">Current Stock</th>
+                                            <th class="p-3 text-right">Purchase Price</th>
+                                            <th class="p-3 text-right">Sale Price</th>
+                                            <th class="p-3 text-right">GST Rate</th>
+                                            <th class="p-3 text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100">
+                                        ${products.length === 0 ? '<tr><td colspan="7" class="p-4 text-center text-slate-400">No products added yet. Click "Add Product" to create one.</td></tr>' : ''}
+                                        ${products.map(p => {
+                                            const isLow = (p.currentStock || 0) <= (p.minStock || 5);
+                                            return `
+                                                <tr class="hover:bg-slate-50">
+                                                    <td class="p-3 font-bold text-slate-800">${p.name}</td>
+                                                    <td class="p-3 font-medium text-slate-600"><span class="px-2 py-0.5 rounded bg-slate-100 font-bold text-xs">${p.category}</span></td>
+                                                    <td class="p-3 text-center font-black ${isLow ? 'text-red-600' : 'text-slate-800'}">
+                                                        ${p.currentStock || 0} ${p.unit}
+                                                        ${isLow ? '<i class="fa-solid fa-triangle-exclamation text-xs ml-1 text-red-500" title="Low Stock"></i>' : ''}
+                                                    </td>
+                                                    <td class="p-3 text-right font-medium text-slate-700">₹${p.purchasePrice || 0}</td>
+                                                    <td class="p-3 text-right font-bold text-agri-700">₹${p.salePrice || 0}</td>
+                                                    <td class="p-3 text-right font-semibold text-slate-600">${p.gstRate || 0}%</td>
+                                                    <td class="p-3 text-right space-x-1">
+                                                        <button onclick="app.openProductStockHistoryModal('${p.id}')" class="px-3 py-1 bg-agri-100 hover:bg-agri-200 text-agri-800 rounded-lg text-xs font-bold"><i class="fa-solid fa-clock-rotate-left"></i> History</button>
+                                                        <button onclick="app.openProductModal('${p.id}')" class="px-2 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs"><i class="fa-solid fa-pen"></i></button>
+                                                        <button onclick="app.confirmDeleteProduct('${p.id}', '${p.name.replace(/'/g, "\\'")}')" class="px-2 py-1 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg text-xs font-bold border border-red-300" title="Delete Product"><i class="fa-solid fa-trash-can"></i></button>
+                                                    </td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('view-container').innerHTML = html;
+            }
+
+            confirmDeleteProduct(productId, productName) {
+                const html = `
+                    <div class="p-3 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm">
+                        <i class="fa-solid fa-triangle-exclamation text-red-600 mr-1"></i> Are you sure you want to delete product <strong>${productName}</strong> from inventory?
+                    </div>
+                `;
+                const buttons = `
+                    <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Cancel</button>
+                    <button onclick="app.deleteProduct('${productId}')" class="btn-3d-danger text-white px-5 py-2 rounded-xl text-sm font-bold"><i class="fa-solid fa-trash-can mr-1"></i> Delete Product</button>
+                `;
+                this.openModal('Delete Product', html, buttons);
+            }
+
+            async deleteProduct(productId) {
+                await this.db.delete('products', productId);
+                this.closeModal();
+                this.toast('Product deleted!');
+                this.renderInventory();
+            }
+
+            async openProductModal(productId = null) {
+                const product = productId ? await this.db.get('products', productId) : null;
+
+                const html = `
+                    <form id="product-form" onsubmit="app.saveProduct(event, '${productId || ''}')" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Product Name *</label>
+                            <input type="text" id="pName" required value="${product ? product.name : ''}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium" placeholder="e.g. DAP Fertilizer 50kg">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Category *</label>
+                                <select id="pCategory" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                                    <option value="Fertilizers" ${product && product.category === 'Fertilizers' ? 'selected' : ''}>Fertilizers</option>
+                                    <option value="Seeds" ${product && product.category === 'Seeds' ? 'selected' : ''}>Seeds</option>
+                                    <option value="Vegetables" ${product && product.category === 'Vegetables' ? 'selected' : ''}>Vegetables</option>
+                                    <option value="Pesticides" ${product && product.category === 'Pesticides' ? 'selected' : ''}>Pesticides</option>
+                                    <option value="Insecticides" ${product && product.category === 'Insecticides' ? 'selected' : ''}>Insecticides</option>
+                                    <option value="Herbicides" ${product && product.category === 'Herbicides' ? 'selected' : ''}>Herbicides</option>
+                                    <option value="Fungicides" ${product && product.category === 'Fungicides' ? 'selected' : ''}>Fungicides</option>
+                                    <option value="Other" ${product && product.category === 'Other' ? 'selected' : ''}>Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Unit *</label>
+                                <select id="pUnit" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                                    <option value="bag" ${product && product.unit === 'bag' ? 'selected' : ''}>bag</option>
+                                    <option value="kg" ${product && product.unit === 'kg' ? 'selected' : ''}>kg</option>
+                                    <option value="litre" ${product && product.unit === 'litre' ? 'selected' : ''}>litre</option>
+                                    <option value="bottle" ${product && product.unit === 'bottle' ? 'selected' : ''}>bottle</option>
+                                    <option value="packet" ${product && product.unit === 'packet' ? 'selected' : ''}>packet</option>
+                                    <option value="piece" ${product && product.unit === 'piece' ? 'selected' : ''}>piece</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Purchase Price (₹)</label>
+                                <input type="number" step="0.01" id="pPurchasePrice" value="${product ? product.purchasePrice || 0 : 0}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Selling Sale Price (₹) *</label>
+                                <input type="number" step="0.01" id="pSalePrice" required value="${product ? product.salePrice || 0 : 0}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-bold text-agri-700">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Opening Stock</label>
+                                <input type="number" id="pOpeningStock" ${product ? 'disabled' : ''} value="${product ? product.currentStock || 0 : 0}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Min Stock Warning</label>
+                                <input type="number" id="pMinStock" value="${product ? product.minStock || 5 : 5}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">GST Rate %</label>
+                                <input type="number" id="pGstRate" value="${product ? product.gstRate || 18 : 18}" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                            </div>
+                        </div>
+                    </form>
+                `;
+
+                const buttons = `
+                    <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Cancel</button>
+                    <button type="submit" form="product-form" class="btn-3d text-white px-5 py-2 rounded-xl text-sm font-bold">Save Product</button>
+                `;
+
+                this.openModal(product ? 'Edit Product' : 'Add New Product', html, buttons);
+            }
+
+            async saveProduct(e, productId) {
+                e.preventDefault();
+                const name = document.getElementById('pName').value.trim();
+                const category = document.getElementById('pCategory').value;
+                const unit = document.getElementById('pUnit').value;
+                const purchasePrice = parseFloat(document.getElementById('pPurchasePrice').value) || 0;
+                const salePrice = parseFloat(document.getElementById('pSalePrice').value) || 0;
+                const openingStock = parseFloat(document.getElementById('pOpeningStock').value) || 0;
+                const minStock = parseFloat(document.getElementById('pMinStock').value) || 5;
+                const gstRate = parseFloat(document.getElementById('pGstRate').value) || 0;
+
+                const item = {
+                    id: productId || undefined,
+                    name,
+                    category,
+                    unit,
+                    purchasePrice,
+                    salePrice,
+                    minStock,
+                    gstRate,
+                    updatedAt: new Date().toISOString()
+                };
+
+                if (!productId) {
+                    item.currentStock = openingStock;
+                }
+
+                const savedProd = await this.db.save('products', item);
+
+                if (!productId && openingStock > 0) {
+                    await this.db.save('stock_ledger', {
+                        date: new Date().toISOString().split('T')[0],
+                        productId: savedProd.id,
+                        productName: savedProd.name,
+                        type: 'Opening Stock',
+                        ref: 'Initial Entry',
+                        inQty: openingStock,
+                        outQty: 0,
+                        balance: openingStock,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+
+                this.closeModal();
+                this.toast('Product saved successfully!');
+                this.renderInventory();
+            }
+
+            async openProductStockHistoryModal(productId) {
+                const product = await this.db.get('products', productId);
+                const allLedger = await this.db.getAll('stock_ledger');
+
+                const history = allLedger.filter(l => l.productId === productId);
+                history.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
+
+                const html = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-2">
+                            <div>
+                                <h3 class="font-extrabold text-slate-800 text-lg">${product.name}</h3>
+                                <p class="text-xs text-slate-500">Current Stock: <strong>${product.currentStock} ${product.unit}</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="overflow-y-auto max-h-[350px]">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 font-bold uppercase">
+                                        <th class="p-2">Date</th>
+                                        <th class="p-2">Movement Type</th>
+                                        <th class="p-2">Reference</th>
+                                        <th class="p-2 text-right">In (+)</th>
+                                        <th class="p-2 text-right">Out (-)</th>
+                                        <th class="p-2 text-right">Closing Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    ${history.length === 0 ? '<tr><td colspan="6" class="p-3 text-center text-slate-400">No stock movements recorded yet.</td></tr>' : ''}
+                                    ${history.map(h => `
+                                        <tr>
+                                            <td class="p-2 font-semibold text-slate-700">${h.date}</td>
+                                            <td class="p-2 font-bold text-slate-800">${h.type}</td>
+                                            <td class="p-2 text-slate-500">${h.ref || '-'}</td>
+                                            <td class="p-2 text-right font-bold text-emerald-600">${h.inQty > 0 ? '+' + h.inQty : '-'}</td>
+                                            <td class="p-2 text-right font-bold text-red-600">${h.outQty > 0 ? '-' + h.outQty : '-'}</td>
+                                            <td class="p-2 text-right font-black text-slate-800">${h.balance}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+
+                this.openModal('Date-Wise Stock History', html);
+            }
+
+            openStockAdjustmentModal() {
+                this.db.getAll('products').then(products => {
+                    const html = `
+                        <form id="adj-form" onsubmit="app.saveStockAdjustment(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Product *</label>
+                                <select id="adjProdId" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                                    ${products.map(p => `<option value="${p.id}">${p.name} (Stock: ${p.currentStock} ${p.unit})</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Adjustment Type *</label>
+                                    <select id="adjType" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                                        <option value="IN">Manual Addition (+ In)</option>
+                                        <option value="OUT">Manual Reduction (- Out)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Quantity *</label>
+                                    <input type="number" id="adjQty" required min="1" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-bold" placeholder="1">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Reason / Note *</label>
+                                <input type="text" id="adjReason" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium" placeholder="Damaged, Expired, Stock Correction, etc.">
+                            </div>
+                        </form>
+                    `;
+
+                    const buttons = `
+                        <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Cancel</button>
+                        <button type="submit" form="adj-form" class="btn-3d-amber text-white px-5 py-2 rounded-xl text-sm font-bold">Apply Adjustment</button>
+                    `;
+
+                    this.openModal('Stock Adjustment (+ / -)', html, buttons);
+                });
+            }
+
+            async saveStockAdjustment(e) {
+                e.preventDefault();
+                const productId = document.getElementById('adjProdId').value;
+                const type = document.getElementById('adjType').value;
+                const qty = parseFloat(document.getElementById('adjQty').value);
+                const reason = document.getElementById('adjReason').value.trim();
+
+                const prod = await this.db.get('products', productId);
+                if (!prod) return;
+
+                if (type === 'OUT' && (prod.currentStock < qty) && !this.settings.allowNegativeStock) {
+                    this.toast(`Insufficient stock! Available: ${prod.currentStock} ${prod.unit}`, 'error');
+                    return;
+                }
+
+                if (type === 'IN') {
+                    prod.currentStock += qty;
+                } else {
+                    prod.currentStock -= qty;
+                }
+
+                await this.db.save('products', prod);
+
+                await this.db.save('stock_ledger', {
+                    date: new Date().toISOString().split('T')[0],
+                    productId: prod.id,
+                    productName: prod.name,
+                    type: type === 'IN' ? 'Adjustment In' : 'Adjustment Out',
+                    ref: reason,
+                    inQty: type === 'IN' ? qty : 0,
+                    outQty: type === 'OUT' ? qty : 0,
+                    balance: prod.currentStock,
+                    createdAt: new Date().toISOString()
+                });
+
+                this.closeModal();
+                this.toast('Stock adjusted successfully!');
+                this.renderInventory();
+            }
+
+            async renderPOS() {
+                const products = await this.db.getAll('products');
+                const customers = await this.db.getAll('customers');
+
+                const html = `
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <!-- Product Selection & Search Grid -->
+                        <div class="lg:col-span-7 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-2xl font-black text-slate-800">Sales Billing (POS)</h2>
+                                <span class="text-xs bg-agri-100 text-agri-800 px-3 py-1 rounded-lg font-bold">Quick Billing</span>
+                            </div>
+
+                            <div class="card-3d p-3 flex items-center gap-3">
+                                <i class="fa-solid fa-magnifying-glass text-slate-400 ml-2"></i>
+                                <input type="text" id="pos-product-search" oninput="app.filterPOSProducts()" placeholder="Search product by name or category..." class="w-full bg-transparent border-none text-sm focus:outline-none text-slate-800 font-medium">
+                            </div>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto pr-1" id="pos-product-grid">
+                                ${products.map(p => `
+                                    <div class="card-3d p-3 flex flex-col justify-between cursor-pointer border hover:border-agri-500 transition" onclick="app.addItemToCart('${p.id}')">
+                                        <div>
+                                            <div class="font-extrabold text-sm text-slate-800 line-clamp-1">${p.name}</div>
+                                            <div class="text-[11px] text-slate-500">${p.category}</div>
+                                        </div>
+                                        <div class="mt-3 flex items-center justify-between">
+                                            <span class="text-xs font-bold text-slate-400">${p.currentStock} ${p.unit}</span>
+                                            <span class="text-sm font-black text-agri-700">₹${p.salePrice}</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Current Bill Cart Panel -->
+                        <div class="lg:col-span-5 space-y-4">
+                            <div class="card-3d p-4 space-y-4 border-t-4 border-agri-700">
+                                <div class="flex items-center justify-between border-b pb-2">
+                                    <h3 class="font-bold text-slate-800 text-base flex items-center gap-2"><i class="fa-solid fa-receipt text-agri-600"></i> Current Sale Invoice</h3>
+                                    <button onclick="app.clearCart()" class="text-xs font-bold text-red-600 hover:underline">Clear</button>
+                                </div>
+
+                                <!-- Customer Selection -->
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Farmer / Customer</label>
+                                    <div class="flex gap-2">
+                                        <select id="posCustomerId" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium">
+                                            <option value="">-- Cash / Walk-in Customer --</option>
+                                            ${customers.map(c => `<option value="${c.id}">${c.name} (${c.village || 'N/A'})</option>`).join('')}
+                                        </select>
+                                        <button onclick="app.openCustomerModal()" class="px-3 bg-agri-100 hover:bg-agri-200 text-agri-800 rounded-xl text-xs font-bold" title="Add Farmer"><i class="fa-solid fa-user-plus"></i></button>
+                                    </div>
+                                </div>
+
+                                <!-- Cart Items Table -->
+                                <div class="min-h-[180px] max-h-[250px] overflow-y-auto space-y-2" id="cart-items-list">
+                                    <p class="text-center text-slate-400 text-xs py-10">Cart is empty. Click items on the left to add.</p>
+                                </div>
+
+                                <!-- Cart Totals -->
+                                <div class="border-t pt-3 space-y-2 text-sm">
+                                    <div class="flex justify-between font-bold text-slate-800 text-lg">
+                                        <span>Total Payable:</span>
+                                        <span id="cart-total-amount" class="text-agri-700">₹0</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-slate-500 uppercase">Paid Amount (₹)</label>
+                                            <input type="number" id="cartPaidAmount" oninput="app.updateCartTotals()" class="w-full p-2 border border-slate-300 rounded-xl text-sm font-bold" placeholder="0">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-slate-500 uppercase">Remaining Due (₹)</label>
+                                            <input type="number" id="cartDueAmount" readonly class="w-full p-2 bg-slate-100 border border-slate-300 rounded-xl text-sm font-bold text-red-600" value="0">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button onclick="app.checkoutSale()" class="btn-3d w-full py-3 text-white rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-check-circle"></i> Save & Print Invoice
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('view-container').innerHTML = html;
+                this.cart = [];
+            }
+
+            filterPOSProducts() {
+                const query = document.getElementById('pos-product-search').value.toLowerCase();
+                document.querySelectorAll('#pos-product-grid > div').forEach(card => {
+                    card.style.display = card.innerText.toLowerCase().includes(query) ? 'flex' : 'none';
+                });
+            }
+
+            async addItemToCart(productId) {
+                const product = await this.db.get('products', productId);
+                if (!product) return;
+
+                const existing = this.cart.find(c => c.productId === productId);
+                if (existing) {
+                    if (existing.qty + 1 > product.currentStock && !this.settings.allowNegativeStock) {
+                        this.toast(`Cannot exceed available stock (${product.currentStock} ${product.unit})`, 'error');
+                        return;
+                    }
+                    existing.qty += 1;
+                } else {
+                    if (product.currentStock <= 0 && !this.settings.allowNegativeStock) {
+                        this.toast('Product is out of stock!', 'error');
+                        return;
+                    }
+                    this.cart.push({
+                        productId: product.id,
+                        name: product.name,
+                        unit: product.unit,
+                        category: product.category,
+                        rate: product.salePrice || 0,
+                        gstRate: product.gstRate || 0,
+                        qty: 1
+                    });
+                }
+
+                this.renderCartItems();
+            }
+
+            renderCartItems() {
+                const container = document.getElementById('cart-items-list');
+                if (this.cart.length === 0) {
+                    container.innerHTML = `<p class="text-center text-slate-400 text-xs py-10">Cart is empty. Click items on the left to add.</p>`;
+                    this.updateCartTotals();
+                    return;
+                }
+
+                container.innerHTML = this.cart.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
+                        <div class="flex-1">
+                            <div class="font-bold text-slate-800">${item.name}</div>
+                            <div class="text-[10px] text-slate-500">₹${item.rate} / ${item.unit}</div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="number" min="1" value="${item.qty}" onchange="app.updateCartItemQty(${idx}, this.value)" class="w-14 p-1 border border-slate-300 rounded text-center font-bold">
+                            <span class="font-black text-slate-800 w-16 text-right">₹${item.qty * item.rate}</span>
+                            <button onclick="app.removeCartItem(${idx})" class="text-red-500 p-1"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+
+                this.updateCartTotals();
+            }
+
+            updateCartItemQty(idx, val) {
+                const qty = parseFloat(val) || 1;
+                this.cart[idx].qty = qty;
+                this.renderCartItems();
+            }
+
+            removeCartItem(idx) {
+                this.cart.splice(idx, 1);
+                this.renderCartItems();
+            }
+
+            clearCart() {
+                this.cart = [];
+                this.renderCartItems();
+            }
+
+            updateCartTotals() {
+                const total = this.cart.reduce((a, b) => a + (b.qty * b.rate), 0);
+                document.getElementById('cart-total-amount').innerText = '₹' + total.toLocaleString('en-IN');
+                
+                const paidInput = document.getElementById('cartPaidAmount');
+                if (!paidInput.value) paidInput.value = total;
+
+                const paid = parseFloat(paidInput.value) || 0;
+                const due = Math.max(0, total - paid);
+                document.getElementById('cartDueAmount').value = due.toFixed(2);
+            }
+
+            async checkoutSale() {
+                if (this.cart.length === 0) {
+                    this.toast('Cart is empty!', 'error');
+                    return;
+                }
+
+                const customerId = document.getElementById('posCustomerId').value;
+                const paidAmount = parseFloat(document.getElementById('cartPaidAmount').value) || 0;
+                const totalAmount = this.cart.reduce((a, b) => a + (b.qty * b.rate), 0);
+                const dueAmount = Math.max(0, totalAmount - paidAmount);
+
+                const sale = {
+                    billNo: 'SBB-' + Math.floor(10000 + Math.random() * 90000),
+                    date: new Date().toISOString().split('T')[0],
+                    customerId: customerId || null,
+                    items: this.cart,
+                    netTotal: totalAmount,
+                    paidAmount,
+                    dueAmount,
+                    createdAt: new Date().toISOString()
+                };
+
+                // Save Sale Record
+                await this.db.save('sales', sale);
+
+                // Update Product Stocks
+                for (let item of this.cart) {
+                    const prod = await this.db.get('products', item.productId);
+                    if (prod) {
+                        prod.currentStock -= item.qty;
+                        await this.db.save('products', prod);
+
+                        await this.db.save('stock_ledger', {
+                            date: sale.date,
+                            productId: prod.id,
+                            productName: prod.name,
+                            type: 'Sale Out',
+                            ref: `Bill #${sale.billNo}`,
+                            inQty: 0,
+                            outQty: item.qty,
+                            balance: prod.currentStock,
+                            createdAt: new Date().toISOString()
+                        });
+                    }
+                }
+
+                // If Customer Selected and Due Amount > 0, Update Ledger
+                if (customerId && dueAmount > 0) {
+                    const cust = await this.db.get('customers', customerId);
+                    if (cust) {
+                        cust.outstanding = (cust.outstanding || 0) + dueAmount;
+                        await this.db.save('customers', cust);
+                    }
+                }
+
+                this.toast('Sale invoice generated successfully!');
+                this.renderInvoicePrintModal(sale);
+                this.clearCart();
+            }
+
+            async renderInvoicePrintModal(sale) {
+                const customer = sale.customerId ? await this.db.get('customers', sale.customerId) : null;
+
+                const html = `
+                    <div class="space-y-4 p-4" id="printable-area">
+                        <div class="text-center border-b pb-3">
+                            <h2 class="text-xl font-black text-agri-900">${this.settings.shopName}</h2>
+                            <p class="text-xs text-slate-500">${this.settings.address}</p>
+                            <p class="text-xs font-bold text-slate-700">Phone: ${this.settings.phone} | GSTIN: ${this.settings.gstin}</p>
+                        </div>
+
+                        <div class="flex justify-between text-xs font-semibold text-slate-700 border-b pb-2">
+                            <div>
+                                <div>Invoice No: <strong>#${sale.billNo}</strong></div>
+                                <div>Customer: <strong>${customer ? customer.name : 'Cash Sale'}</strong></div>
+                            </div>
+                            <div class="text-right">
+                                <div>Date: <strong>${sale.date}</strong></div>
+                                <div>Village: <strong>${customer ? customer.village || 'N/A' : 'N/A'}</strong></div>
+                            </div>
+                        </div>
+
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-100 font-bold border-b">
+                                    <th class="p-1.5">Item</th>
+                                    <th class="p-1.5 text-center">Qty</th>
+                                    <th class="p-1.5 text-right">Rate</th>
+                                    <th class="p-1.5 text-right">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y">
+                                ${sale.items.map(i => `
+                                    <tr>
+                                        <td class="p-1.5 font-medium">${i.name}</td>
+                                        <td class="p-1.5 text-center">${i.qty} ${i.unit}</td>
+                                        <td class="p-1.5 text-right">₹${i.rate}</td>
+                                        <td class="p-1.5 text-right font-bold">₹${i.qty * i.rate}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+
+                        <div class="border-t pt-2 space-y-1 text-xs">
+                            <div class="flex justify-between font-black text-sm"><span>Total Amount:</span><span>₹${sale.netTotal}</span></div>
+                            <div class="flex justify-between text-slate-600"><span>Paid Amount:</span><span>₹${sale.paidAmount}</span></div>
+                            <div class="flex justify-between text-red-600 font-bold"><span>Balance Due:</span><span>₹${sale.dueAmount}</span></div>
+                        </div>
+
+                        <div class="text-center pt-4 border-t text-[10px] text-slate-400">
+                            Thank you for shopping with us! Wish you a prosperous harvest!
+                        </div>
+                    </div>
+                `;
+
+                const buttons = `
+                    <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Close</button>
+                    <button onclick="window.print()" class="btn-3d text-white px-5 py-2 rounded-xl text-sm font-bold"><i class="fa-solid fa-print"></i> Print Invoice</button>
+                `;
+
+                this.openModal('Sale Invoice Receipt', html, buttons);
+            }
+
+            async renderCustomers(selectedCustomerId = null) {
+                const customers = await this.db.getAll('customers');
+
+                if (selectedCustomerId) {
+                    await this.renderCustomerAccountLedger(selectedCustomerId);
+                    return;
+                }
+
+                const html = `
+                    <div class="space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-2xl font-black text-slate-800">Farmers & Customer Khata</h2>
+                                <p class="text-slate-500 text-sm">Customer Credit Dues & Payment Records</p>
+                            </div>
+                            <button onclick="app.openCustomerModal()" class="btn-3d text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-plus"></i> Add Farmer
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${customers.length === 0 ? '<div class="col-span-full text-center py-12 text-slate-400">No farmers added. Click "Add Farmer" to create an account.</div>' : ''}
+                            ${customers.map(c => `
+                                <div class="card-3d p-5 flex flex-col justify-between border-t-4 border-amber-500">
+                                    <div>
+                                        <div class="flex items-start justify-between">
+                                            <h3 class="font-extrabold text-slate-800 text-lg cursor-pointer" onclick="app.renderCustomers('${c.id}')">${c.name}</h3>
+                                            <div class="flex items-center gap-1">
+                                                <span class="text-xs px-2 py-0.5 rounded bg-slate-100 font-bold text-slate-600">${c.village || 'N/A'}</span>
+                                                <button onclick="app.confirmDeleteCustomer('${c.id}', '${c.name.replace(/'/g, "\\'")}')" class="text-red-500 hover:bg-red-50 p-1.5 rounded-lg text-xs" title="Delete Farmer">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="text-xs text-slate-500 mt-2 cursor-pointer" onclick="app.renderCustomers('${c.id}')"><i class="fa-solid fa-phone text-agri-600"></i> ${c.phone || 'N/A'}</div>
+                                    </div>
+                                    <div class="mt-4 pt-3 border-t flex items-center justify-between cursor-pointer" onclick="app.renderCustomers('${c.id}')">
+                                        <div>
+                                            <div class="text-[10px] uppercase font-bold text-slate-400">Outstanding Udhar</div>
+                                            <div class="text-lg font-black text-amber-600">₹${(c.outstanding || 0).toLocaleString('en-IN')}</div>
+                                        </div>
+                                        <span class="text-xs font-bold text-agri-700 bg-agri-50 px-3 py-1.5 rounded-lg border">Open Khata <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('view-container').innerHTML = html;
+            }
+
+            confirmDeleteCustomer(customerId, name) {
+                const html = `
+                    <p class="text-sm text-slate-700">Are you sure you want to delete farmer account for <strong>${name}</strong>?</p>
+                `;
+                const buttons = `
+                    <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Cancel</button>
+                    <button onclick="app.deleteCustomer('${customerId}')" class="btn-3d-danger text-white px-5 py-2 rounded-xl text-sm font-bold"><i class="fa-solid fa-trash-can mr-1"></i> Delete Farmer</button>
+                `;
+                this.openModal('Delete Farmer Profile', html, buttons);
+            }
+
+            async deleteCustomer(customerId) {
+                await this.db.delete('customers', customerId);
+                this.closeModal();
+                this.toast('Farmer profile deleted!');
+                this.renderCustomers();
+            }
+
+            openCustomerModal() {
+                const html = `
+                    <form id="customer-form" onsubmit="app.saveCustomer(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Farmer Name *</label>
+                            <input type="text" id="cName" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium" placeholder="e.g. Ramesh Kumar">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Village</label>
+                                <input type="text" id="cVillage" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium" placeholder="e.g. Rampur">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Phone Number</label>
+                                <input type="text" id="cPhone" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-medium" placeholder="9876543210">
+                            </div>
+                        </div>
+                    </form>
+                `;
+
+                const buttons = `
+                    <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Cancel</button>
+                    <button type="submit" form="customer-form" class="btn-3d text-white px-5 py-2 rounded-xl text-sm font-bold">Save Farmer</button>
+                `;
+
+                this.openModal('Add Farmer Khata Account', html, buttons);
+            }
+
+            async saveCustomer(e) {
+                e.preventDefault();
+                const name = document.getElementById('cName').value.trim();
+                const village = document.getElementById('cVillage').value.trim();
+                const phone = document.getElementById('cPhone').value.trim();
+
+                await this.db.save('customers', { name, village, phone, outstanding: 0 });
+                this.closeModal();
+                this.toast('Farmer added successfully!');
+                this.renderCustomers();
+            }
+
+            async renderCustomerAccountLedger(customerId) {
+                const customer = await this.db.get('customers', customerId);
+                if (!customer) {
+                    this.renderCustomers();
+                    return;
+                }
+                const sales = (await this.db.getAll('sales')).filter(s => s.customerId === customerId);
+
+                const html = `
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-3">
+                            <button onclick="app.renderCustomers()" class="p-2 bg-white border border-slate-200 rounded-xl hover:bg-slate-50"><i class="fa-solid fa-arrow-left text-slate-600"></i></button>
+                            <div>
+                                <h2 class="text-2xl font-black text-slate-800">${customer.name}</h2>
+                                <p class="text-xs text-slate-500">Village: ${customer.village || 'N/A'} | Phone: ${customer.phone || 'N/A'}</p>
+                            </div>
+                        </div>
+
+                        <div class="card-3d p-5 space-y-4">
+                            <h3 class="font-bold text-slate-800 text-base border-b pb-2">Sales & Payment History</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-sm">
+                                    <thead>
+                                        <tr class="bg-slate-100 font-bold text-xs uppercase">
+                                            <th class="p-3">Date</th>
+                                            <th class="p-3">Invoice No</th>
+                                            <th class="p-3 text-right">Total (₹)</th>
+                                            <th class="p-3 text-right">Paid (₹)</th>
+                                            <th class="p-3 text-right">Due (₹)</th>
+                                            <th class="p-3 text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y">
+                                        ${sales.map(s => `
+                                            <tr>
+                                                <td class="p-3 font-semibold text-slate-700">${s.date}</td>
+                                                <td class="p-3 font-bold text-slate-800">#${s.billNo}</td>
+                                                <td class="p-3 text-right font-bold">₹${s.netTotal}</td>
+                                                <td class="p-3 text-right text-emerald-600 font-bold">₹${s.paidAmount}</td>
+                                                <td class="p-3 text-right text-red-600 font-black">₹${s.dueAmount}</td>
+                                                <td class="p-3 text-right">
+                                                    <button onclick="app.confirmDeleteSale('${s.id}', '${customer.id}')" class="text-red-500 hover:text-red-700 p-1" title="Delete Sale Invoice"><i class="fa-solid fa-trash-can"></i></button>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('view-container').innerHTML = html;
+            }
+
+            confirmDeleteSale(saleId, redirectCustomerId) {
+                const html = `
+                    <div class="space-y-3">
+                        <p class="text-sm text-slate-700">Are you sure you want to delete this sale invoice?</p>
+                        <label class="flex items-center gap-2 text-xs font-medium text-slate-700">
+                            <input type="checkbox" id="revert_sale_stock" checked class="rounded text-agri-600"> Restore sold quantities back into product stock inventory
+                        </label>
+                    </div>
+                `;
+                const buttons = `
+                    <button onclick="app.closeModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-600">Cancel</button>
+                    <button onclick="app.deleteSale('${saleId}', '${redirectCustomerId}')" class="btn-3d-danger text-white px-5 py-2 rounded-xl text-sm font-bold"><i class="fa-solid fa-trash-can mr-1"></i> Delete Invoice</button>
+                `;
+                this.openModal('Delete Sale Invoice', html, buttons);
+            }
+
+            async deleteSale(saleId, redirectCustomerId) {
+                const sale = await this.db.get('sales', saleId);
+                if (!sale) return;
+
+                const revertStock = document.getElementById('revert_sale_stock')?.checked;
+
+                if (revertStock && sale.items) {
+                    for (let item of sale.items) {
+                        const prod = await this.db.get('products', item.productId);
+                        if (prod) {
+                            prod.currentStock = (prod.currentStock || 0) + item.qty;
+                            await this.db.save('products', prod);
+
+                            await this.db.save('stock_ledger', {
+                                date: new Date().toISOString().split('T')[0],
+                                productId: prod.id,
+                                productName: prod.name,
+                                type: 'Sale Cancelled (Restocked)',
+                                ref: `Bill #${sale.billNo}`,
+                                inQty: item.qty,
+                                outQty: 0,
+                                balance: prod.currentStock,
+                                createdAt: new Date().toISOString()
+                            });
+                        }
+                    }
+                }
+
+                await this.db.delete('sales', saleId);
+                this.closeModal();
+                this.toast('Sale invoice deleted!');
+                this.renderCustomerAccountLedger(redirectCustomerId);
+            }
+
+            async renderGST() {
+                const sales = await this.db.getAll('sales');
+                const pesticideCategories = ['Pesticides', 'Insecticides', 'Herbicides', 'Fungicides'];
+
+                let pesticideSales = [];
+                sales.forEach(s => {
+                    s.items.forEach(item => {
+                        if (pesticideCategories.includes(item.category)) {
+                            const taxable = (item.qty * item.rate);
+                            const gstRate = item.gstRate || 18;
+                            const taxAmount = taxable * (gstRate / 100);
+                            pesticideSales.push({
+                                date: s.date,
+                                billNo: s.billNo,
+                                item: item.name,
+                                category: item.category,
+                                taxable,
+                                gstRate,
+                                cgst: taxAmount / 2,
+                                sgst: taxAmount / 2,
+                                totalTax: taxAmount
+                            });
+                        }
+                    });
+                });
+
+                const totalTaxable = pesticideSales.reduce((a, b) => a + b.taxable, 0);
+                const totalTax = pesticideSales.reduce((a, b) => a + b.totalTax, 0);
+
+                const html = `
+                    <div class="space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-2xl font-black text-slate-800">Pesticide-Only GST Report</h2>
+                                <p class="text-slate-500 text-sm">Strict Business Logic: Excludes Seeds, Vegetables & Fertilizers</p>
+                            </div>
+                            <button onclick="window.print()" class="bg-slate-800 text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-print"></i> Print GST Statement
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="card-3d p-4 border-l-4 border-emerald-500">
+                                <div class="text-xs font-bold text-slate-400 uppercase">Taxable Pesticide Turnover</div>
+                                <div class="text-2xl font-black text-slate-800 mt-1">₹${totalTaxable.toLocaleString('en-IN')}</div>
+                            </div>
+                            <div class="card-3d p-4 border-l-4 border-purple-500">
+                                <div class="text-xs font-bold text-slate-400 uppercase">Total GST Output Liability</div>
+                                <div class="text-2xl font-black text-purple-700 mt-1">₹${totalTax.toLocaleString('en-IN')}</div>
+                            </div>
+                        </div>
+
+                        <div class="card-3d p-5" id="printable-area">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-xs">
+                                    <thead>
+                                        <tr class="bg-slate-100 font-bold border-b text-slate-700 uppercase">
+                                            <th class="p-2.5">Date</th>
+                                            <th class="p-2.5">Bill No</th>
+                                            <th class="p-2.5">Pesticide Product</th>
+                                            <th class="p-2.5">Category</th>
+                                            <th class="p-2.5 text-right">Taxable (₹)</th>
+                                            <th class="p-2.5 text-right">CGST (₹)</th>
+                                            <th class="p-2.5 text-right">SGST (₹)</th>
+                                            <th class="p-2.5 text-right">Total Tax (₹)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y">
+                                        ${pesticideSales.length === 0 ? '<tr><td colspan="8" class="p-4 text-center text-slate-400">No pesticide sales recorded yet.</td></tr>' : ''}
+                                        ${pesticideSales.map(p => `
+                                            <tr>
+                                                <td class="p-2.5 font-semibold text-slate-700">${p.date}</td>
+                                                <td class="p-2.5 font-bold">#${p.billNo}</td>
+                                                <td class="p-2.5 font-medium">${p.item}</td>
+                                                <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-purple-50 text-purple-800 font-bold">${p.category}</span></td>
+                                                <td class="p-2.5 text-right font-bold">₹${p.taxable.toFixed(2)}</td>
+                                                <td class="p-2.5 text-right">₹${p.cgst.toFixed(2)}</td>
+                                                <td class="p-2.5 text-right">₹${p.sgst.toFixed(2)}</td>
+                                                <td class="p-2.5 text-right font-black text-purple-700">₹${p.totalTax.toFixed(2)}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('view-container').innerHTML = html;
+            }
+
+            async renderReports() {
+                const products = await this.db.getAll('products');
+
+                const html = `
+                    <div class="space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-2xl font-black text-slate-800">Stock Register & Reports</h2>
+                                <p class="text-slate-500 text-sm">Official Traditional Shop Stock Ledger Register</p>
+                            </div>
+                            <button onclick="window.print()" class="btn-3d text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-file-pdf"></i> Print Stock Register
+                            </button>
+                        </div>
+
+                        <div class="card-3d p-6 space-y-4" id="printable-area">
+                            <div class="text-center border-b pb-4">
+                                <h1 class="text-2xl font-black text-agri-900">${this.settings.shopName}</h1>
+                                <p class="text-xs text-slate-600 font-semibold">${this.settings.address}</p>
+                                <h3 class="text-sm font-extrabold text-amber-600 mt-2 uppercase tracking-widest">OFFICIAL PHYSICAL STOCK REGISTER</h3>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-xs border border-slate-300">
+                                    <thead>
+                                        <tr class="bg-slate-200 text-slate-800 font-black border-b border-slate-300 uppercase">
+                                            <th class="p-2 border-r">S.No</th>
+                                            <th class="p-2 border-r">Product</th>
+                                            <th class="p-2 border-r">Category</th>
+                                            <th class="p-2 border-r text-center">Unit</th>
+                                            <th class="p-2 border-r text-right">Closing Qty</th>
+                                            <th class="p-2 border-r text-right">Purchase Rate (₹)</th>
+                                            <th class="p-2 text-right">Stock Value (₹)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-200">
+                                        ${products.map((p, idx) => {
+                                            const val = (p.currentStock || 0) * (p.purchasePrice || 0);
+                                            return `
+                                                <tr class="hover:bg-slate-50">
+                                                    <td class="p-2 border-r font-bold">${idx + 1}</td>
+                                                    <td class="p-2 border-r font-bold text-slate-800">${p.name}</td>
+                                                    <td class="p-2 border-r">${p.category}</td>
+                                                    <td class="p-2 border-r text-center font-bold">${p.unit}</td>
+                                                    <td class="p-2 border-r text-right font-black ${p.currentStock <= p.minStock ? 'text-red-600' : ''}">${p.currentStock || 0}</td>
+                                                    <td class="p-2 border-r text-right">₹${p.purchasePrice || 0}</td>
+                                                    <td class="p-2 text-right font-black text-agri-800">₹${val.toLocaleString('en-IN')}</td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('view-container').innerHTML = html;
+            }
+
+            async renderSettings() {
+                const html = `
+                    <div class="space-y-6 max-w-3xl">
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-800">Settings & Database Backup</h2>
+                            <p class="text-slate-500 text-sm">Shop Information & Local JSON Backup/Restore</p>
+                        </div>
+
+                        <!-- Shop Info Form -->
+                        <div class="card-3d p-5 space-y-4">
+                            <h3 class="font-extrabold text-slate-800 text-base border-b pb-2">Shop Profile</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Shop Name</label>
+                                    <input type="text" id="cfgShopName" value="${this.settings.shopName}" class="w-full p-2 border border-slate-300 rounded-xl text-sm font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Address</label>
+                                    <input type="text" id="cfgAddress" value="${this.settings.address}" class="w-full p-2 border border-slate-300 rounded-xl text-sm font-medium">
+                                </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Phone</label>
+                                        <input type="text" id="cfgPhone" value="${this.settings.phone}" class="w-full p-2 border border-slate-300 rounded-xl text-sm font-medium">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">GSTIN</label>
+                                        <input type="text" id="cfgGstin" value="${this.settings.gstin}" class="w-full p-2 border border-slate-300 rounded-xl text-sm font-medium">
+                                    </div>
+                                </div>
+                                <button onclick="app.saveSettingsConfig()" class="btn-3d text-white px-5 py-2 rounded-xl text-sm font-bold">Save Shop Details</button>
+                            </div>
+                        </div>
+
+                        <!-- Backup & Restore -->
+                        <div class="card-3d p-5 space-y-4">
+                            <h3 class="font-extrabold text-slate-800 text-base border-b pb-2">Data Backup & Restore</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="p-4 bg-agri-50 rounded-2xl border border-agri-200 space-y-2">
+                                    <h4 class="font-bold text-agri-900 text-sm">Export Local Backup</h4>
+                                    <p class="text-xs text-agri-700">Downloads all data safely as JSON file to your device memory.</p>
+                                    <button onclick="app.exportDatabaseBackup()" class="btn-3d text-white px-4 py-2 rounded-xl text-xs font-bold w-full"><i class="fa-solid fa-download mr-1"></i> Export JSON Backup</button>
+                                </div>
+                                <div class="p-4 bg-amber-50 rounded-2xl border border-amber-200 space-y-2">
+                                    <h4 class="font-bold text-amber-900 text-sm">Restore JSON Backup</h4>
+                                    <p class="text-xs text-amber-700">Upload a saved backup file to restore database.</p>
+                                    <input type="file" id="restore-file-input" class="hidden" accept=".json" onchange="app.importDatabaseBackup(event)">
+                                    <button onclick="document.getElementById('restore-file-input').click()" class="btn-3d-amber text-white px-4 py-2 rounded-xl text-xs font-bold w-full"><i class="fa-solid fa-upload mr-1"></i> Restore Backup File</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('view-container').innerHTML = html;
+            }
+
+            async saveSettingsConfig() {
+                this.settings.shopName = document.getElementById('cfgShopName').value.trim();
+                this.settings.address = document.getElementById('cfgAddress').value.trim();
+                this.settings.phone = document.getElementById('cfgPhone').value.trim();
+                this.settings.gstin = document.getElementById('cfgGstin').value.trim();
+
+                await this.db.save('settings', { id: 'config', ...this.settings });
+                this.toast('Settings saved successfully!');
+            }
+
+            async exportDatabaseBackup() {
+                const data = {
+                    products: await this.db.getAll('products'),
+                    distributors: await this.db.getAll('distributors'),
+                    customers: await this.db.getAll('customers'),
+                    purchases: await this.db.getAll('purchases'),
+                    sales: await this.db.getAll('sales'),
+                    payments: await this.db.getAll('payments'),
+                    stock_ledger: await this.db.getAll('stock_ledger'),
+                    settings: this.settings
+                };
+
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `SBB_Backup_${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+            }
+
+            async importDatabaseBackup(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        if (confirm('This will replace current local database. Proceed?')) {
+                            await this.db.clearAll();
+                            for (let key of Object.keys(data)) {
+                                if (Array.isArray(data[key])) {
+                                    for (let item of data[key]) {
+                                        await this.db.save(key, item);
+                                    }
+                                }
+                            }
+                            this.toast('Database restored successfully!');
+                            this.navigate('dashboard');
+                        }
+                    } catch (err) {
+                        this.toast('Invalid Backup File Format!', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+
+            loadSampleDataPrompt() {
+                if (confirm('Pre-fill shop with realistic sample Seeds, Fertilizers, Pesticides & Distributors?')) {
+                    this.loadSampleData();
+                }
+            }
+
+            async loadSampleData() {
+                await this.db.clearAll();
+
+                // Distributors
+                const d1 = await this.db.save('distributors', { firmName: 'Onkar Seed Industries', place: 'Karnal', phone: '9812345678', gstin: '06AAAC0000A1Z1', outstanding: 14500 });
+                const d2 = await this.db.save('distributors', { firmName: 'IFFCO Fertilizer Hub', place: 'Delhi', phone: '9876543210', gstin: '07AAACI0000A1Z2', outstanding: 0 });
+
+                // Products
+                const p1 = await this.db.save('products', { name: 'Wheat Seed HD-2967', category: 'Seeds', unit: 'bag', purchasePrice: 850, salePrice: 950, currentStock: 80, minStock: 10, gstRate: 0 });
+                const p2 = await this.db.save('products', { name: 'DAP Fertilizer 50kg', category: 'Fertilizers', unit: 'bag', purchasePrice: 1300, salePrice: 1350, currentStock: 4, minStock: 10, gstRate: 5 });
+                const p3 = await this.db.save('products', { name: 'Chlorpyrifos Pesticide 1L', category: 'Pesticides', unit: 'bottle', purchasePrice: 450, salePrice: 550, currentStock: 25, minStock: 5, gstRate: 18 });
+
+                // Stock Movement Records
+                await this.db.save('stock_ledger', { date: new Date().toISOString().split('T')[0], productId: p1.id, productName: p1.name, type: 'Opening Stock', ref: 'Initial', inQty: 80, outQty: 0, balance: 80, createdAt: new Date().toISOString() });
+                await this.db.save('stock_ledger', { date: new Date().toISOString().split('T')[0], productId: p2.id, productName: p2.name, type: 'Opening Stock', ref: 'Initial', inQty: 4, outQty: 0, balance: 4, createdAt: new Date().toISOString() });
+
+                // Farmers
+                await this.db.save('customers', { name: 'Ramesh Singh', village: 'Rampur', phone: '9988776655', outstanding: 1200 });
+
+                this.toast('Sample data pre-loaded successfully!');
+                this.navigate('dashboard');
+            }
+        }
+
+        // Initialize App
+        const app = new Application();
+        window.onload = () => app.init();
+    </script>
+</body>
+</html>
